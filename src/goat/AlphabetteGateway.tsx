@@ -40,7 +40,7 @@ export const AlphabetteGateway: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 shrink-0">
               <a
-                href="/"
+                href="https://alphabette.fr"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-black transition-colors"
               >
                 <Compass className="w-4 h-4" />
@@ -48,7 +48,7 @@ export const AlphabetteGateway: React.FC = () => {
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
-                href="/#nos-applications"
+                href="https://alphabette.fr#nos-applications"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-700 hover:bg-slate-800/70 text-slate-200 text-sm font-bold transition-colors"
               >
                 <Layers className="w-4 h-4" />

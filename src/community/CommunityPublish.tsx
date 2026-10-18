@@ -193,7 +193,7 @@ export const CommunityPublish: React.FC<CommunityPublishProps> = ({
             </p>
             <div className="flex flex-wrap gap-2">
               <a
-                href={`/goat/communaute?p=${published.id}`}
+                href={`/communaute?p=${published.id}`}
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-[11px] font-black transition-colors"
               >
                 <Heart className="w-3.5 h-3.5" />
@@ -263,7 +263,7 @@ export const CommunityPublish: React.FC<CommunityPublishProps> = ({
               <span>{isPublishing ? 'Publication…' : session.user ? 'Publier ma pyramide' : 'Créer mon compte et publier'}</span>
             </button>
             <a
-              href="/goat/communaute"
+              href="/communaute"
               className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 text-[11px] font-bold transition-colors"
             >
               Explorer la galerie
@@ -272,7 +272,7 @@ export const CommunityPublish: React.FC<CommunityPublishProps> = ({
           </div>
           <p className="text-[10px] text-slate-500">
             {filled}/{visibleSlots.length} places remplies — l'image publiée contient ta pyramide, ton % de controverse
-            et le QR code vers alphabette.fr/goat.
+            et le QR code vers goatchevretheking.alphabette.fr.
           </p>
         </>
       )}

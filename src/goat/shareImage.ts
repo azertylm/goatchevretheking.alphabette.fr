@@ -13,13 +13,13 @@ import { playerPhotoUrl } from './images';
  *  - « square » : 1080 × 1080 (Twitter / X, WhatsApp, LinkedIn, format 1:1)
  *
  * Contenu : titre, pyramide (photos + noms + années), badge Hot Take, % de controverse,
- * QR code vers alphabette.fr/goat et mention d'invitation.
+ * QR code vers goatchevretheking.alphabette.fr et mention d'invitation.
  */
 
 export type ShareFormat = 'story' | 'square';
 
-export const SHARE_URL = 'https://alphabette.fr/goat';
-export const SHARE_MENTION = 'Fais ton classement gratuitement sur alphabette.fr/goat';
+export const SHARE_URL = 'https://goatchevretheking.alphabette.fr';
+export const SHARE_MENTION = 'Fais ton classement gratuitement sur goatchevretheking.alphabette.fr';
 
 const SIZES: Record<ShareFormat, { width: number; height: number }> = {
   story: { width: 1080, height: 1920 },
@@ -148,7 +148,7 @@ export async function renderShareImage(options: ShareImageOptions): Promise<Blob
 
   ctx.fillStyle = '#94a3b8';
   ctx.font = `600 ${isStory ? 32 : 26}px ${FONT_STACK}`;
-  ctx.fillText(`Univers ${sportLabel} · alphabette.fr/goat`, width / 2, isStory ? 232 : 190);
+  ctx.fillText(`Univers ${sportLabel} · goatchevretheking.alphabette.fr`, width / 2, isStory ? 232 : 190);
 
   // --- Pyramide ---
   const pyramidTop = isStory ? 300 : 230;

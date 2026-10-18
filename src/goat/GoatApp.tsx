@@ -8,7 +8,7 @@ import { refreshCommunitySession } from '../community/communitySession';
 
 /**
  * @file GoatApp.tsx
- * Application « Goat Chèvre The King » servie sur alphabette.fr/goat.
+ * Application « Goat Chèvre The King » servie sur goatchevretheking.alphabette.fr.
  *
  * Mise en page responsive (mobile tactile & desktop) :
  *  1. En-tête dynamique avec identité de marque et bandeau alphabette.fr
@@ -55,7 +55,7 @@ export const GoatApp: React.FC = () => {
               publier dans la communauté et le retrouver partout.
             </span>
             <a
-              href="/goat/communaute"
+              href="/communaute"
               className="inline-flex items-center gap-1 text-amber-300 hover:text-amber-200 font-semibold"
             >
               <Users className="w-3.5 h-3.5" />

@@ -162,5 +162,5 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
 
 /** Lien public d'une pyramide partagée. */
 export function pyramidLink(id: string): string {
-  return `https://alphabette.fr/goat/communaute?p=${id}`;
+  return `https://goatchevretheking.alphabette.fr/communaute?p=${id}`;
 }

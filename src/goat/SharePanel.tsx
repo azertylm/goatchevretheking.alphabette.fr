@@ -8,7 +8,7 @@ import { ShareFormat, downloadBlob, renderShareImage } from './shareImage';
  * @file SharePanel.tsx
  * Bouton « Partager ma Pyramide » : génère une image haute définition
  * (Instagram Story 9:16 ou carré 1:1) avec la pyramide, le badge Hot Take,
- * le % de controverse et un QR code vers alphabette.fr/goat.
+ * le % de controverse et un QR code vers goatchevretheking.alphabette.fr.
  */
 
 interface SharePanelProps {
@@ -98,7 +98,7 @@ export const SharePanel: React.FC<SharePanelProps> = ({
           </h2>
           <p className="text-[11px] text-slate-300 mt-1 max-w-xl">
             Génère une image prête à publier avec ta pyramide, ton % de controverse et un QR code vers
-            alphabette.fr/goat.
+            goatchevretheking.alphabette.fr.
           </p>
         </div>
 
@@ -166,7 +166,7 @@ export const SharePanel: React.FC<SharePanelProps> = ({
 
             <p className="text-[11px] text-slate-400 leading-relaxed">
               L'image contient : ta pyramide (photos, noms, années), le badge « Hot Take 🔥 », ton % de controverse, un
-              QR code vers alphabette.fr/goat et la mention d'invitation.
+              QR code vers goatchevretheking.alphabette.fr et la mention d'invitation.
             </p>
           </div>
 

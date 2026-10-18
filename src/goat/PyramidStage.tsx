@@ -152,7 +152,7 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
         isHotTakeSet={Boolean(api.state.hotTake)}
       />
 
-      {/* Partage viral : image HD + QR code vers alphabette.fr/goat */}
+      {/* Partage viral : image HD + QR code vers goatchevretheking.alphabette.fr */}
       <SharePanel
         assignments={visibleAssignments}
         players={pool}

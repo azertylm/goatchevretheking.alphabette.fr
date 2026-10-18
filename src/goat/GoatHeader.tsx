@@ -29,7 +29,7 @@ export const GoatHeader: React.FC = () => {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <a
-              href="/goat/communaute"
+              href="/communaute"
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/15 hover:bg-amber-400/25 border border-amber-400/30 text-[11px] font-bold text-amber-200 transition-colors"
             >
               <Users className="w-3 h-3" />

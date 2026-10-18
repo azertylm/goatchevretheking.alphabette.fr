@@ -9,7 +9,7 @@ import { refreshCommunitySession, setCommunityUser, useCommunitySession } from '
 
 /**
  * @file CommunityPage.tsx
- * Page publique /goat/communaute : la galerie des pyramides partagées par la
+ * Page publique /communaute : la galerie des pyramides partagées par la
  * communauté, avec création de compte, connexion et lien direct vers une
  * pyramide (?p=<id>).
  */
@@ -43,7 +43,7 @@ export const CommunityPage: React.FC = () => {
         {/* Barre de navigation + compte */}
         <div className="flex flex-wrap items-center gap-3">
           <a
-            href="/goat"
+            href="/"
             className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-2xl border border-slate-800 hover:bg-slate-900 text-slate-300 text-[11px] font-bold transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />

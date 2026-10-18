@@ -1,29 +1,22 @@
 import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Loader2 } from 'lucide-react';
-import App from './App.tsx';
-import { resolveEffectivePath } from './appRoutes';
 import './index.css';
 
 /**
- * Routage de l'écosystème alphabette.fr.
+ * Goat Chèvre The King — application autonome.
  *
- *  - goatchevretheking.alphabette.fr  -> application Goat Chèvre The King
- *  - /goat                            -> la même application, par son chemin
- *  - /goat/communaute                 -> galerie des pyramides partagées
- *  - /admin                           -> console d'administration
- *  - /                                -> vitrine et hub central (SPA)
+ *  - `/`            : la pyramide, les duels et le partage
+ *  - `/communaute`  : la galerie des pyramides publiées par la communauté
  *
- * Les applications sont chargées à la demande (code splitting) : chaque app
- * part dans son propre fichier JS, le hub reste léger, et l'écosystème peut
- * accueillir beaucoup d'applications sans alourdir la page d'accueil.
+ * Les deux pages sont chargées à la demande : chacune part dans son propre
+ * fichier JS, la page d'accueil reste légère.
  */
 
 const GoatApp = lazy(() => import('./goat/GoatApp').then((module) => ({ default: module.GoatApp })));
 const CommunityPage = lazy(() =>
   import('./community/CommunityPage').then((module) => ({ default: module.CommunityPage })),
 );
-const AdminApp = lazy(() => import('./admin/AdminApp').then((module) => ({ default: module.AdminApp })));
 
 const RouteLoader = () => (
   <div className="min-h-screen bg-slate-950 flex items-center justify-center gap-3">
@@ -32,26 +25,11 @@ const RouteLoader = () => (
   </div>
 );
 
-// Sous-domaine pris en compte : les deux adresses servent la même application.
-const effectivePath = resolveEffectivePath(
-  window.location.hostname,
-  window.location.pathname,
-  window.location.search,
-);
-
-const isAdminRoute = effectivePath === '/admin' || effectivePath.startsWith('/admin/');
-const isCommunityRoute = effectivePath === '/goat/communaute' || effectivePath.startsWith('/goat/communaute/');
-const isGoatRoute = effectivePath === '/goat' || effectivePath.startsWith('/goat/');
-
-const renderRoute = () => {
-  if (isAdminRoute) return <AdminApp />;
-  if (isCommunityRoute) return <CommunityPage />;
-  if (isGoatRoute) return <GoatApp />;
-  return <App />;
-};
+const path = window.location.pathname.replace(/\/+$/, '') || '/';
+const isCommunityRoute = path === '/communaute' || path.startsWith('/communaute/');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Suspense fallback={<RouteLoader />}>{renderRoute()}</Suspense>
+    <Suspense fallback={<RouteLoader />}>{isCommunityRoute ? <CommunityPage /> : <GoatApp />}</Suspense>
   </StrictMode>,
 );

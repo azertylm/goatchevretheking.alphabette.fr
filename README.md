@@ -1,74 +1,69 @@
-# ALPHABETTE — écosystème d'applications
-
-Regroupe les applications d'**alphabette.fr**, dont **Goat Chèvre The King**.
+# 🐐 Goat Chèvre The King
 
 > Elisez votre goat votre chèvre ou votre Roi.
 
-## 🐐 Goat Chèvre The King
+**Adresse : <https://goatchevretheking.alphabette.fr>**
 
-Le classement GOAT le plus sérieux (et le moins sérieux) du web : constituez votre
-pyramide de légendes du **football international** ou de la **NBA**, faites des
-**duels express**, découvrez votre **score de non-conformisme**, et partagez votre
-pyramide en image prête pour Instagram (Story 9:16 ou carré) avec QR code.
+Le classement GOAT le plus sérieux (et le moins sérieux) du web. Constituez votre
+pyramide de légendes du **Football International** ou de la **NBA**, confrontez-les
+en **duels express**, découvrez votre **score de non-conformisme**, et partagez
+votre pyramide en image prête pour Instagram (Story 9:16 ou carré 1:1) avec QR code.
 
-- Adresse : **https://goatchevretheking.alphabette.fr** (également `/goat`)
-- 400 joueurs (200 football / 200 NBA) issus de Wikidata, photos libres
-- Pyramide 1 / 2 / 4 / 8 (+ étage 5 de 16 en mode expert), mode chaos, Hot Take
-- Galerie communautaire : comptes, publication, votes — `/goat/communaute`
+## Ce que fait l'application
 
-## Applications
-
-Le registre central fait foi : **`data/apps-registry.json`**.
-Chaque application se pilote en 1 clic depuis la console `/admin`
-(activer, masquer, badge « Nouveau » / « Populaire »).
-
-Pour ajouter une application, voir **`docs/ecosysteme-alphabette.md`**.
+- **400 joueurs** (200 football / 200 NBA) issus de Wikidata, avec photos libres
+  et années de carrière
+- **Pyramide** 1 / 2 / 4 / 8 (+ étage 5 de 16 en « Mode Expert »), réservistes avec
+  recherche par nom et filtre par époque, **Mode Chaos 🎲**
+- **Hot Take 🔥** : un favori mis en avant dans le partage
+- **10 duels rapides** → score de non-conformisme face au classement de référence
+- **Partage viral** : image HD (Story ou carré) avec le titre, les photos, le Hot Take,
+  le pourcentage de controverse et un QR code vers l'application
+- **Galerie communautaire** (`/communaute`) : création de compte, publication,
+  votes — accessible à tous
+- **Cadrage photo personnalisable** par joueur (image entière par défaut)
 
 ## Démarrer en local
 
 ```powershell
 bun install
-
-$env:ADMIN_PASSWORD='mot-de-passe-admin'
-$env:COMMUNITY_SESSION_SECRET='secret-de-session-communaute'
+Copy-Item .env.example .env      # puis renseigner COMMUNITY_SESSION_SECRET
 bun run dev
 ```
 
 → <http://localhost:3000>
 
-Aperçu d'un sous-domaine sans toucher au DNS : <http://localhost:3000/?app=goat>
+## Commandes
 
-## Architecture
+| Commande | Rôle |
+|---|---|
+| `bun run dev` | serveur de développement (Vite + API) |
+| `bun run build` | build de production (`dist/` + `dist/server.cjs`) |
+| `bun run start` | lance le build de production |
+| `bun run lint` | vérification TypeScript |
+| `bun run fetch:players` | régénère `data/players.json` depuis Wikidata |
 
-Un seul serveur sert toutes les applications, chacune sur son **sous-domaine**
-(`app.alphabette.fr`) **et** par son chemin (`alphabette.fr/app`). Un certificat
-TLS wildcard couvre l'ensemble des applications, présentes et futures.
+## Structure
 
-- `src/appRoutes.ts` — carte des applications (sous-domaines et chemins)
-- `src/main.tsx` — routage + chargement à la demande (code splitting)
-- `server.ts` — serveur Express/Vite (API + pages)
-- `data/apps-registry.json` — registre des applications
-- `docs/ecosysteme-alphabette.md` — domaines, DNS, certificat, ajout d'une app
+```
+src/goat/          l'application : pyramide, duels, controverse, partage, photos
+src/community/     comptes, publication et galerie communautaire
+server/            API des joueurs, proxy photos, comptes et galerie
+data/players.json  base des 400 joueurs (générée, versionnée)
+scripts/           pipeline Wikidata (fetch-players)
+```
 
-## Variables d'environnement
+## Variable d'environnement
 
 | Variable | Rôle |
 |---|---|
-| `ADMIN_PASSWORD` | accès à la console `/admin` (obligatoire en production) |
-| `ADMIN_SESSION_SECRET` | signature des sessions admin (recommandé) |
-| `COMMUNITY_SESSION_SECRET` | signature des sessions communauté (obligatoire pour que les comptes survivent à un redémarrage) |
+| `COMMUNITY_SESSION_SECRET` | signature des sessions communauté — **obligatoire pour que les comptes survivent à un redémarrage** |
+| `PORT` | port d'écoute (3000 par défaut) |
 
-Voir `.env.example`.
+## Liens
 
-## Dépôts
-
-- **`goatchevretheking.alphabette.fr`** — dépôt principal : tout le code de l'écosystème
-- **`Alphabette`** — miroir tenu à jour automatiquement (même historique)
-
-Le hub **alphabette.fr** et toutes les applications vivent dans le **même code** :
-un seul serveur sert chaque application sur son sous-domaine. Un nouveau projet
-n'a donc pas besoin d'un nouveau dépôt — seulement d'un dossier et d'une entrée
-dans la carte des applications (`src/appRoutes.ts`).
+- Vitrine de l'écosystème : <https://alphabette.fr>
+- Dépôt du projet : <https://github.com/azertylm/goatchevretheking.alphabette.fr>
 
 ## Licence
 

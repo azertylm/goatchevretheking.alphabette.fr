@@ -1,6 +1,0 @@
-{
-  "name": "ALPHABETTE SASU",
-  "description": "Écosystème officiel de solutions logicielles et d'IA souveraines édité par ALPHABETTE SASU à La Grande-Motte.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

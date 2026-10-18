@@ -82,7 +82,7 @@ export const CommunityGallery: React.FC<CommunityGalleryProps> = ({ initialOpenI
     void load();
   }, [load]);
 
-  // Lien direct : /goat/communaute?p=<id>
+  // Lien direct : /communaute?p=<id>
   useEffect(() => {
     if (!initialOpenId) return;
     const found = pyramids.find((pyramid) => pyramid.id === initialOpenId);
@@ -227,7 +227,7 @@ export const CommunityGallery: React.FC<CommunityGalleryProps> = ({ initialOpenI
               : 'Sois le premier à partager ton classement GOAT : construis ta pyramide puis publie-la en un clic.'}
           </p>
           <a
-            href="/goat"
+            href="/"
             className="inline-flex items-center gap-1.5 mt-2 px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black transition-colors"
           >
             Construire ma pyramide
