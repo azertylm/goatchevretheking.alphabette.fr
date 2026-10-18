@@ -50,6 +50,27 @@ async function startServer() {
   // Modération de la galerie communautaire (protégée par MODERATION_PASSWORD)
   app.use("/api/moderation", createModerationRouter());
 
+  // --- RELAIS VERS LE HUB (développement) ---
+  // La base commune (@alphabette/shell) lit le registre des applications et les
+  // tarifs sur l'origine de l'application (`/api/apps`, `/api/config.json`) :
+  // en production c'est alphabette.fr (CORS ouvert en lecture), en local on
+  // relaie vers le hub pour que la barre affiche le vrai registre et le vrai
+  // décompte des applications gratuites.
+  const HUB_LOCAL = process.env.HUB_URL || "http://localhost:3000";
+  for (const chemin of ["/api/apps", "/api/config.json"]) {
+    app.get(chemin, async (_req: Request, res: Response) => {
+      try {
+        const reponse = await fetch(`${HUB_LOCAL}${chemin}`);
+        if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
+        res.setHeader("Content-Type", reponse.headers.get("content-type") ?? "application/json");
+        res.send(await reponse.text());
+      } catch {
+        // Hub éteint : la base reprend sa liste de secours, sans bruit.
+        res.status(503).json({ apps: [] });
+      }
+    });
+  }
+
   // --- FRONT-END ---
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
