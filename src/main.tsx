@@ -17,6 +17,9 @@ const GoatApp = lazy(() => import('./goat/GoatApp').then((module) => ({ default:
 const CommunityPage = lazy(() =>
   import('./community/CommunityPage').then((module) => ({ default: module.CommunityPage })),
 );
+const ModerationPage = lazy(() =>
+  import('./community/ModerationPage').then((module) => ({ default: module.ModerationPage })),
+);
 
 const RouteLoader = () => (
   <div className="min-h-screen bg-slate-950 flex items-center justify-center gap-3">
@@ -27,9 +30,12 @@ const RouteLoader = () => (
 
 const path = window.location.pathname.replace(/\/+$/, '') || '/';
 const isCommunityRoute = path === '/communaute' || path.startsWith('/communaute/');
+const isModerationRoute = path === '/moderation' || path.startsWith('/moderation/');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Suspense fallback={<RouteLoader />}>{isCommunityRoute ? <CommunityPage /> : <GoatApp />}</Suspense>
+    <Suspense fallback={<RouteLoader />}>
+      {isModerationRoute ? <ModerationPage /> : isCommunityRoute ? <CommunityPage /> : <GoatApp />}
+    </Suspense>
   </StrictMode>,
 );

@@ -21,6 +21,8 @@ votre pyramide en image prête pour Instagram (Story 9:16 ou carré 1:1) avec QR
   le pourcentage de controverse et un QR code vers l'application
 - **Galerie communautaire** (`/communaute`) : création de compte, publication,
   votes — accessible à tous
+- **Console de modération** (`/moderation`, protégée par mot de passe) : masquer ou
+  supprimer une pyramide publiée, suspendre un compte
 - **Cadrage photo personnalisable** par joueur (image entière par défaut)
 
 ## Démarrer en local
@@ -47,17 +49,19 @@ bun run dev
 
 ```
 src/goat/          l'application : pyramide, duels, controverse, partage, photos
-src/community/     comptes, publication et galerie communautaire
-server/            API des joueurs, proxy photos, comptes et galerie
+src/community/     comptes, publication, galerie et console de modération
+server/            API des joueurs, proxy photos, comptes, galerie et modération
 data/players.json  base des 400 joueurs (générée, versionnée)
 scripts/           pipeline Wikidata (fetch-players)
 ```
 
-## Variable d'environnement
+## Variables d'environnement
 
 | Variable | Rôle |
 |---|---|
 | `COMMUNITY_SESSION_SECRET` | signature des sessions communauté — **obligatoire pour que les comptes survivent à un redémarrage** |
+| `MODERATION_PASSWORD` | accès à la console `/moderation` (sans lui, la console reste fermée) |
+| `MODERATION_SESSION_SECRET` | signature des sessions de modération (optionnel) |
 | `PORT` | port d'écoute (3000 par défaut) |
 
 ## Liens

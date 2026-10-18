@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { createGoatPlayersRouter } from "./server/goatPlayers";
 import { createGoatPhotosRouter } from "./server/goatPhotos";
 import { createCommunityRouter, ensureCommunityStorage } from "./server/communityRoutes";
+import { createModerationRouter } from "./server/moderationRoutes";
 
 /**
  * @file server.ts
@@ -45,6 +46,9 @@ async function startServer() {
 
   // Proxy des photos (Wikimedia) : indispensable pour que le canvas de partage reste exploitable
   app.use("/api/goat", createGoatPhotosRouter());
+
+  // Modération de la galerie communautaire (protégée par MODERATION_PASSWORD)
+  app.use("/api/moderation", createModerationRouter());
 
   // --- FRONT-END ---
   if (process.env.NODE_ENV !== "production") {
