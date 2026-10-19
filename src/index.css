@@ -1,1 +1,101 @@
 @import "tailwindcss";
+
+/* =============================================================
+   Goat Chèvre The King — charte « terroir noble / alpage / royauté »
+   Vert forêt nocturne (#0c1712), ardoise, reflets dorés, bois vieilli.
+   ============================================================= */
+
+:root {
+  color-scheme: dark;
+}
+
+/* Fond immersif : dégradés radiaux profonds façon nuit d'alpage,
+   avec de légers reflets dorés (lune / laiterie d'altitude). */
+body {
+  background-color: #0c1712;
+  background-image:
+    radial-gradient(1100px 700px at 50% -12%, rgba(251, 191, 36, 0.09), transparent 62%),
+    radial-gradient(900px 640px at 88% 18%, rgba(52, 211, 153, 0.06), transparent 60%),
+    radial-gradient(1100px 780px at 8% 85%, rgba(16, 42, 32, 0.65), transparent 70%),
+    linear-gradient(180deg, #101d17 0%, #0c1712 55%, #070d0a 100%);
+  background-attachment: fixed;
+}
+
+/* Carte mise en valeur (podium / rang GOAT) : liseré doré subtil + halo discret. */
+.goat-card-glow {
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.45),
+    0 6px 24px -6px rgba(251, 191, 36, 0.35),
+    0 0 18px -2px rgba(251, 191, 36, 0.22);
+}
+
+/* Étagère d'affinage : bois vieilli très sombre, planches horizontales
+   ( lustre sur l'arête haute, ombre portée en dessous, veinage discret ). */
+.pasture-shelf {
+  background-color: #150e08;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 236, 190, 0.07) 0px,
+      rgba(255, 236, 190, 0.07) 1px,
+      transparent 1px,
+      transparent 46px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.45) 0px,
+      rgba(0, 0, 0, 0.45) 2px,
+      transparent 2px,
+      transparent 46px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.16) 0px,
+      rgba(0, 0, 0, 0.16) 3px,
+      transparent 3px,
+      transparent 96px
+    ),
+    linear-gradient(180deg, #261a0f 0%, #1a120b 55%, #100a06 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 236, 190, 0.06),
+    inset 0 -10px 22px rgba(0, 0, 0, 0.6),
+    0 14px 30px -14px rgba(0, 0, 0, 0.8);
+}
+
+/* Gain de Crottins d'Or : pulsation dorée au changement de solde. */
+@keyframes crottin-pop {
+  0% { transform: scale(1); filter: brightness(1); }
+  35% { transform: scale(1.14); filter: brightness(1.45); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+.crottin-pop {
+  animation: crottin-pop 550ms ease-out 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .crottin-pop {
+    animation: none;
+  }
+}
+
+/* Apparition des vignettes : fondu + léger glissement dès que l'image est
+   prête. Le conteneur garde un ratio fixe (3:4), donc aucun décalage de mise
+   en page pendant le chargement des 500 photos. */
+@keyframes goat-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.goat-fade-in {
+  animation: goat-fade-in 320ms ease-out both;
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .goat-fade-in {
+    animation: none;
+  }
+}

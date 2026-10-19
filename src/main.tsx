@@ -1,16 +1,21 @@
 import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Loader2 } from 'lucide-react';
+import { AppShell } from '@alphabette/shell';
+import '@alphabette/shell/style.css';
 import './index.css';
+import { APP } from './alphabette.app';
 
 /**
  * Goat Chèvre The King — application autonome.
  *
  *  - `/`            : la pyramide, les duels et le partage
  *  - `/communaute`  : la galerie des pyramides publiées par la communauté
+ *  - `/moderation`  : la console de modération (protégée par mot de passe)
  *
- * Les deux pages sont chargées à la demande : chacune part dans son propre
- * fichier JS, la page d'accueil reste légère.
+ * Toutes les pages sont enveloppées par <AppShell>, la base commune de
+ * l'écosystème alphabette.fr (barre écosystème + en-tête d'application).
+ * Les pages sont chargées à la demande : chacune part dans son propre fichier JS.
  */
 
 const GoatApp = lazy(() => import('./goat/GoatApp').then((module) => ({ default: module.GoatApp })));
@@ -34,8 +39,10 @@ const isModerationRoute = path === '/moderation' || path.startsWith('/moderation
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Suspense fallback={<RouteLoader />}>
-      {isModerationRoute ? <ModerationPage /> : isCommunityRoute ? <CommunityPage /> : <GoatApp />}
-    </Suspense>
+    <AppShell app={APP} initialTheme="nuit">
+      <Suspense fallback={<RouteLoader />}>
+        {isModerationRoute ? <ModerationPage /> : isCommunityRoute ? <CommunityPage /> : <GoatApp />}
+      </Suspense>
+    </AppShell>
   </StrictMode>,
 );

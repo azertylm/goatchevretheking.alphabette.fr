@@ -40,15 +40,15 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   const isFramed = hasCustomFrame(player.id);
 
   // Photo entière par défaut. En case de pyramide, on garde des hauteurs compactes
-  // (l'image reste complète, simplement plus petite) ; en réserve, un format portrait
-  // 4/5 met les visages bien mieux en valeur.
+  // (l'image reste complète, simplement plus petite) ; en réserve, un format
+  // « carte sportive » 3:4 met les visages bien mieux en valeur.
   const photoClassName = isSlot
     ? compactTier === 1
       ? 'w-full h-28 sm:h-32'
       : compactTier === 2
         ? 'w-full h-24 sm:h-28'
         : 'w-full h-20 sm:h-24'
-    : 'w-full aspect-[4/5]';
+    : 'w-full aspect-[3/4]';
 
   const nameSize = isSlot ? (compactTier === 1 ? 'text-[11px] sm:text-xs' : 'text-[10px] sm:text-[11px]') : 'text-xs';
   const yearSize = isSlot ? 'text-[9px] sm:text-[10px]' : 'text-[10px]';
@@ -61,13 +61,16 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         event.dataTransfer.effectAllowed = 'move';
       }}
       onClick={onClick}
-      className={`group relative rounded-xl overflow-hidden border text-left cursor-pointer select-none transition-all ${
+      className={`group relative rounded-2xl overflow-hidden border text-left cursor-pointer select-none touch-manipulation
+                  transition-all duration-200 ease-out transform-gpu hover:scale-[1.02] hover:z-10 ${
         isSelected
           ? 'border-amber-400 ring-2 ring-amber-400/60 shadow-lg shadow-amber-500/20'
           : isHotTake
             ? 'border-orange-400/70 ring-1 ring-orange-400/40'
-            : 'border-slate-700 hover:border-slate-500'
-      } bg-slate-900 ${isDragging ? 'opacity-40' : ''}`}
+            : 'border-emerald-400/25 hover:border-amber-300/60 hover:shadow-lg hover:shadow-amber-500/10'
+      } bg-[#101b15] ${isSlot && compactTier === 1 ? 'goat-card-glow' : ''} ${
+        isDragging ? 'opacity-40' : ''
+      }`}
       title={`${player.name} — ${player.career}`}
     >
       <PlayerAvatar player={player} className={photoClassName} />
@@ -85,9 +88,21 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         </span>
       )}
 
-      <div className={`px-1.5 py-1 bg-slate-950/90 ${isSlot ? '' : 'space-y-0.5'}`}>
+      <div className={`px-1.5 py-1 bg-[#0a120e]/95 backdrop-blur-sm ${isSlot ? '' : 'space-y-0.5'}`}>
         <p className={`${nameSize} font-bold text-white leading-tight line-clamp-2`}>{player.name}</p>
-        <p className={`${yearSize} font-semibold text-amber-300/90 leading-tight whitespace-nowrap`}>{player.career}</p>
+        <p className={`${yearSize} flex items-center gap-1 font-semibold text-amber-300/90 leading-tight`}>
+          <span className="truncate">{player.career}</span>
+          {player.isCurrentlyCompeting && (
+            <span
+              title="En compétition"
+              aria-label="En compétition : carrière en cours"
+              className="relative flex h-1.5 w-1.5 flex-none"
+            >
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping motion-reduce:animate-none" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            </span>
+          )}
+        </p>
       </div>
 
       {onToggleHotTake && (

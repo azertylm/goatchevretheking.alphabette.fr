@@ -20,6 +20,7 @@ import {
   toggleCommunityLike,
 } from './communityApi';
 import { useCommunitySession } from './communitySession';
+import { SPORTS, type SportId } from '../goat/sportsCatalog';
 
 /**
  * @file CommunityGallery.tsx
@@ -27,7 +28,7 @@ import { useCommunitySession } from './communitySession';
  * popularité ou fraîcheur, votes et fiche détaillée avec l'image haute définition.
  */
 
-type SportFilter = 'tous' | 'football' | 'nba';
+type SportFilter = 'tous' | SportId;
 type SortOption = 'recent' | 'popular';
 
 interface CommunityGalleryProps {
@@ -35,10 +36,15 @@ interface CommunityGalleryProps {
   initialOpenId?: string | null;
 }
 
-const SPORT_BADGES: Record<string, { emoji: string; label: string }> = {
-  football: { emoji: '⚽', label: 'Football' },
-  nba: { emoji: '🏀', label: 'NBA' },
-};
+/** Pastilles des univers : les 30 disciplines du catalogue. */
+const SPORT_OPTIONS: Array<{ id: SportFilter; label: string; emoji: string }> = [
+  { id: 'tous', label: 'Tous', emoji: '🏆' },
+  ...SPORTS.map((sport) => ({ id: sport.id as SportFilter, label: sport.shortLabel, emoji: sport.emoji })),
+];
+
+const SPORT_BADGES: Record<string, { emoji: string; label: string }> = Object.fromEntries(
+  SPORTS.map((sport) => [sport.id, { emoji: sport.emoji, label: sport.shortLabel }]),
+);
 
 function formatDate(value: string): string {
   try {
@@ -130,14 +136,8 @@ export const CommunityGallery: React.FC<CommunityGalleryProps> = ({ initialOpenI
     <section className="space-y-5">
       {/* Filtres */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex gap-1.5 p-1 rounded-2xl bg-slate-900/80 border border-slate-800">
-          {(
-            [
-              { id: 'tous', label: 'Tous', emoji: '🏆' },
-              { id: 'football', label: 'Football', emoji: '⚽' },
-              { id: 'nba', label: 'NBA', emoji: '🏀' },
-            ] as Array<{ id: SportFilter; label: string; emoji: string }>
-          ).map((option) => (
+        <div className="flex gap-1.5 p-1 rounded-2xl bg-slate-900/80 border border-slate-800 overflow-x-auto max-w-full [scrollbar-width:thin]">
+          {SPORT_OPTIONS.map((option) => (
             <button
               key={option.id}
               type="button"

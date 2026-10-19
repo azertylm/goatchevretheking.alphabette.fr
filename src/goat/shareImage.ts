@@ -107,7 +107,12 @@ export async function renderShareImage(options: ShareImageOptions): Promise<Blob
       if (loaded) {
         photos.set(player.id, loaded);
       } else {
-        const fallback = await loadPhoto(buildFallbackAvatar(player.name));
+        const fallback = await loadPhoto(
+          buildFallbackAvatar(player.name, {
+            sport: player.sport,
+            countryCode: player.countryCode,
+          }),
+        );
         if (fallback) photos.set(player.id, fallback);
       }
     }),

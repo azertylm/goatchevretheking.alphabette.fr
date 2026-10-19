@@ -48,7 +48,7 @@ export const PyramidBoard: React.FC<PyramidBoardProps> = ({
   };
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6">
+    <div className="rounded-2xl border border-amber-500/10 bg-[#0e1813]/80 p-4 sm:p-6 shadow-2xl shadow-black/40 backdrop-blur-md">
       {/* Barre d'outils */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
@@ -126,7 +126,7 @@ export const PyramidBoard: React.FC<PyramidBoardProps> = ({
       <div className="space-y-4">
         {tiers.map((tier) => (
           <div key={tier.level} className="space-y-2">
-            <p className="text-center text-[10px] font-bold uppercase tracking-widest text-slate-500">
+            <p className="text-center text-[10px] font-bold uppercase tracking-widest text-slate-400">
               {tier.level === 1 ? (
                 <span className="inline-flex items-center gap-1 text-amber-400">
                   <Crown className="w-3 h-3" />
@@ -181,13 +181,13 @@ export const PyramidBoard: React.FC<PyramidBoardProps> = ({
                         onSelectPlayer(null);
                       }
                     }}
-                    className={`rounded-xl border border-dashed flex flex-col items-center justify-center text-center transition-colors cursor-pointer ${
+                    className={`rounded-2xl border border-dashed flex flex-col items-center justify-center text-center transition-all duration-200 ease-out transform-gpu hover:scale-[1.02] cursor-pointer ${
                       selectedPlayerId
                         ? 'border-amber-400/70 bg-amber-400/5 hover:bg-amber-400/10'
-                        : 'border-slate-700 bg-slate-950/60 hover:border-slate-500'
+                        : 'border-emerald-400/25 bg-[#0b1410]/70 hover:border-amber-300/60 hover:bg-amber-400/5'
                     } ${tier.level === 1 ? 'h-24 sm:h-28' : tier.level === 2 ? 'h-20 sm:h-24' : 'h-16 sm:h-20'}`}
                   >
-                    <span className="text-[10px] font-bold text-slate-500">Place libre</span>
+                    <span className="text-[10px] font-bold text-slate-400">Place libre</span>
                   </button>
                 );
               })}
@@ -196,14 +196,16 @@ export const PyramidBoard: React.FC<PyramidBoardProps> = ({
         ))}
       </div>
 
-      {/* Légende */}
-      <p className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-slate-500">
-        <span className="inline-flex items-center gap-1">
-          <Flame className="w-3 h-3 text-orange-400" />
-          Badge « Hot Take 🔥 » : un seul joueur à la fois
-        </span>
-        <span>· {PYRAMID_TIERS.length} étages disponibles avec le mode expert</span>
-      </p>
+      {/* Socle : étagère d'affinage qui porte la légende */}
+      <div className="mt-6 pasture-shelf rounded-2xl px-4 py-3">
+        <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] font-semibold text-stone-300">
+          <span className="inline-flex items-center gap-1">
+            <Flame className="w-3 h-3 text-orange-400" />
+            Badge « Hot Take 🔥 » : un seul joueur à la fois
+          </span>
+          <span>· {PYRAMID_TIERS.length} étages disponibles avec le mode expert</span>
+        </p>
+      </div>
     </div>
   );
 };

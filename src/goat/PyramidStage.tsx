@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { SportId } from './sports';
 import { GoatPlayer, PlayersPayload } from './types';
@@ -7,6 +7,7 @@ import { usePyramidState } from './usePyramidState';
 import { PyramidBoard } from './PyramidBoard';
 import { ReserveDrawer } from './ReserveDrawer';
 import { DuelExpress } from './DuelExpress';
+import { addCrottins } from './useGoatProgression';
 import { ControversyGauge } from './ControversyGauge';
 import { SharePanel } from './SharePanel';
 import { CommunityPublish } from '../community/CommunityPublish';
@@ -26,9 +27,20 @@ interface PyramidStageProps {
   sport: SportId;
   /** Remonte les effectifs par univers pour l'affichage du sélecteur. */
   onCountsReady?: (counts: Partial<Record<SportId, number>>) => void;
+  /** Recherche pilotée par la barre de disciplines (sports + joueurs). */
+  searchQuery?: string;
+  onSearchQueryChange?: (query: string) => void;
+  /** Remonte le nombre de joueurs correspondant à la recherche. */
+  onSearchMatchCount?: (count: number) => void;
 }
 
-export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady }) => {
+export const PyramidStage: React.FC<PyramidStageProps> = ({
+  sport,
+  onCountsReady,
+  searchQuery,
+  onSearchQueryChange,
+  onSearchMatchCount,
+}) => {
   const [payload, setPayload] = useState<PlayersPayload | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -87,6 +99,20 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
     });
   }, [payload, onCountsReady]);
 
+  /** Récompense : +20 Crottins d'Or quand la pyramide passe de incomplète à complète. */
+  const wasCompleteRef = useRef<boolean | null>(null);
+  useEffect(() => {
+    if (wasCompleteRef.current === null) {
+      // Premier rendu : la pyramide restaurée du localStorage ne rapporte rien.
+      wasCompleteRef.current = api.isComplete;
+      return;
+    }
+    if (api.isComplete && !wasCompleteRef.current) {
+      addCrottins(20, 'pyramide');
+    }
+    wasCompleteRef.current = api.isComplete;
+  }, [api.isComplete]);
+
   /** Clic dans la réserve : sélectionne (ou désélectionne) le joueur à placer. */
   const handleReserveSelect = (playerId: string) => {
     setSelectedPlayerId((current) => (current === playerId ? null : playerId));
@@ -95,9 +121,9 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
   if (isLoading) {
     return (
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-10 flex flex-col items-center gap-3 text-slate-400">
+        <div className="rounded-2xl border border-emerald-500/15 bg-[#0e1813]/80 backdrop-blur-md p-10 flex flex-col items-center gap-3 text-slate-300 shadow-xl shadow-black/30">
           <Loader2 className="w-6 h-6 animate-spin text-amber-400" />
-          <p className="text-sm">Chargement des légendes {sport === 'football' ? 'du football' : 'de la NBA'}…</p>
+          <p className="text-sm">Chargement des légendes — {getSport(sport).label}…</p>
         </div>
       </section>
     );
@@ -106,7 +132,7 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
   if (error) {
     return (
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
-        <div className="rounded-3xl border border-red-500/40 bg-red-500/5 p-6 text-center space-y-3">
+        <div className="rounded-2xl border border-red-500/40 bg-[#1a0e11]/80 backdrop-blur-md p-6 text-center space-y-3 shadow-xl shadow-black/30">
           <AlertCircle className="w-6 h-6 text-red-400 mx-auto" />
           <p className="text-sm font-semibold text-red-300">Base de joueurs indisponible</p>
           <p className="text-xs text-red-200/80 max-w-xl mx-auto">{error}</p>
@@ -133,10 +159,14 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({ sport, onCountsReady
       />
 
       <ReserveDrawer
+        sport={sport}
         players={pool}
         selectedPlayerId={selectedPlayerId}
         hotTakeId={api.state.hotTake}
         placedIds={api.placedIds}
+        searchQuery={searchQuery}
+        onSearchQueryChange={onSearchQueryChange}
+        onFilteredCount={onSearchMatchCount}
         onSelectPlayer={handleReserveSelect}
         onToggleHotTake={toggleHotTake}
       />

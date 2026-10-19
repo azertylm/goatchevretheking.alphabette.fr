@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "fetch:players": "tsx scripts/fetch-players.ts"
+    "fetch:players": "tsx scripts/fetch-players.ts",
+    "generate:sports": "tsx scripts/generate-sports-data.ts",
+    "check:filters": "tsx scripts/check-decade-filters.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

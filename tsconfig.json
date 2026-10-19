@@ -4,7 +4,9 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "module": "ESNext",
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "lib": [
       "ES2022",
       "DOM",
@@ -14,9 +16,16 @@
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
+    "resolveJsonModule": true,
     "allowJs": true,
     "jsx": "react-jsx",
     "paths": {
+      "@alphabette/shell": [
+        "./src/shell/index.ts"
+      ],
+      "@alphabette/shell/style.css": [
+        "./src/shell/shell.css"
+      ],
       "@/*": [
         "./*"
       ]

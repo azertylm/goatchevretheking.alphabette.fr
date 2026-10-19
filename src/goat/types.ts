@@ -18,6 +18,19 @@ export interface GoatPlayer {
   career: string;
   /** Notoriété Wikidata (nombre de versions linguistiques Wikipédia). */
   fame: number;
+  /** Code pays ISO 3166-1 alpha-2 (« FR », « BR »…), absent de l'ancienne base. */
+  countryCode?: string;
+  /** Bornes de carrière normalisées (nouvelles bases par discipline). */
+  careerStart?: number;
+  careerEnd?: number;
+  /** Nombre de trophées recensés. */
+  trophiesCount?: number;
+  /** Marque « légende ». */
+  isLegend?: boolean;
+  /** Carrière encore ouverte → pastille « En compétition ». */
+  isCurrentlyCompeting?: boolean;
+  /** Bornes de carrière déduites de la naissance, non datées par Wikidata. */
+  careerEstimated?: boolean;
 }
 
 export interface PlayersPayload {

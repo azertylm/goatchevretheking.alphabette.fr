@@ -8,8 +8,14 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
+        '@alphabette/shell/style.css': path.resolve('src/shell/shell.css'),
+        '@alphabette/shell': path.resolve('src/shell/index.ts'),
         '@': path.resolve(__dirname, '.'),
       },
+    },
+    // La base commune (@alphabette/shell) est compilée comme du code du projet.
+    optimizeDeps: {
+      exclude: ['@alphabette/shell'],
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

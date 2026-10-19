@@ -3,6 +3,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import { createGoatPlayersRouter } from "./server/goatPlayers";
+import { createGoatSportsRouter } from "./server/goatSports";
 import { createGoatPhotosRouter } from "./server/goatPhotos";
 import { createCommunityRouter, ensureCommunityStorage } from "./server/communityRoutes";
 import { createModerationRouter } from "./server/moderationRoutes";
@@ -43,6 +44,9 @@ async function startServer() {
 
   // Base des joueurs de Goat Chèvre The King (data/players.json)
   app.use("/api/goat", createGoatPlayersRouter());
+
+  // Bases par discipline (data/sports/*.json, 30 sports × 500 athlètes)
+  app.use("/api/goat", createGoatSportsRouter());
 
   // Proxy des photos (Wikimedia) : indispensable pour que le canvas de partage reste exploitable
   app.use("/api/goat", createGoatPhotosRouter());

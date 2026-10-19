@@ -3,6 +3,8 @@ import { CheckCircle2, RotateCcw, Swords, Trophy, X } from 'lucide-react';
 import { GoatPlayer } from './types';
 import { PyramidApi } from './usePyramidState';
 import { PlayerCard } from './PlayerCard';
+import { addCrottins } from './useGoatProgression';
+import { discoverVignettes } from './usePaniniAlbum';
 
 /**
  * @file DuelExpress.tsx
@@ -82,6 +84,12 @@ export const DuelExpress: React.FC<DuelExpressProps> = ({ api, pool }) => {
 
     const nextResults = [...results, { winner, loser }];
     setResults(nextResults);
+
+    // Album Panini : les deux adversaires du duel sont « rencontrés ».
+    discoverVignettes(winner.sport, [winner.id, loser.id]);
+
+    // Récompense : +5 Crottins d'Or par duel voté.
+    addCrottins(5, 'duel');
 
     if (current + 1 >= duels.length) {
       placeWinners(nextResults.map((result) => result.winner));

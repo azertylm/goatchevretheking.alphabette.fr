@@ -1,0 +1,157 @@
+{
+  "generatedAt": "2026-10-19T12:08:46.182Z",
+  "targetPerSport": 500,
+  "totalAthletes": 14719,
+  "sports": [
+    {
+      "sport": "football",
+      "label": "Football International",
+      "count": 500
+    },
+    {
+      "sport": "nba",
+      "label": "Basketball NBA",
+      "count": 500
+    },
+    {
+      "sport": "tennis",
+      "label": "Tennis",
+      "count": 500
+    },
+    {
+      "sport": "swimming",
+      "label": "Natation",
+      "count": 500
+    },
+    {
+      "sport": "table-tennis",
+      "label": "Tennis de table",
+      "count": 500
+    },
+    {
+      "sport": "rugby",
+      "label": "Rugby",
+      "count": 500
+    },
+    {
+      "sport": "handball",
+      "label": "Handball",
+      "count": 500
+    },
+    {
+      "sport": "athletics",
+      "label": "Athlétisme",
+      "count": 500
+    },
+    {
+      "sport": "cycling",
+      "label": "Cyclisme",
+      "count": 500
+    },
+    {
+      "sport": "judo",
+      "label": "Judo",
+      "count": 500
+    },
+    {
+      "sport": "boxing",
+      "label": "Boxe",
+      "count": 500
+    },
+    {
+      "sport": "f1",
+      "label": "Formule 1",
+      "count": 500
+    },
+    {
+      "sport": "volleyball",
+      "label": "Volley-ball",
+      "count": 500
+    },
+    {
+      "sport": "golf",
+      "label": "Golf",
+      "count": 500
+    },
+    {
+      "sport": "ice-hockey",
+      "label": "Hockey sur glace",
+      "count": 500
+    },
+    {
+      "sport": "cricket",
+      "label": "Cricket",
+      "count": 500
+    },
+    {
+      "sport": "badminton",
+      "label": "Badminton",
+      "count": 500
+    },
+    {
+      "sport": "gymnastics",
+      "label": "Gymnastique",
+      "count": 500
+    },
+    {
+      "sport": "fencing",
+      "label": "Escrime",
+      "count": 500
+    },
+    {
+      "sport": "rowing",
+      "label": "Aviron",
+      "count": 500
+    },
+    {
+      "sport": "weightlifting",
+      "label": "Haltérophilie",
+      "count": 500
+    },
+    {
+      "sport": "wrestling",
+      "label": "Lutte",
+      "count": 500
+    },
+    {
+      "sport": "alpine-skiing",
+      "label": "Ski alpin",
+      "count": 500
+    },
+    {
+      "sport": "snowboarding",
+      "label": "Snowboard",
+      "count": 374
+    },
+    {
+      "sport": "figure-skating",
+      "label": "Patinage artistique",
+      "count": 500
+    },
+    {
+      "sport": "speed-skating",
+      "label": "Patinage de vitesse",
+      "count": 500
+    },
+    {
+      "sport": "equestrian",
+      "label": "Sports équestres",
+      "count": 500
+    },
+    {
+      "sport": "sailing",
+      "label": "Voile",
+      "count": 500
+    },
+    {
+      "sport": "archery",
+      "label": "Tir à l’arc",
+      "count": 345
+    },
+    {
+      "sport": "shooting",
+      "label": "Tir sportif",
+      "count": 500
+    }
+  ]
+}

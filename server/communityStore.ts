@@ -308,8 +308,11 @@ export function publishPyramid(input: PublishPyramidInput): CommunityPyramid {
     throw new CommunityError("Place au moins un joueur sur ta pyramide avant de la publier.", 400);
   }
 
-  const sport = input.sport === "nba" ? "nba" : "football";
-  const sportLabel = sanitizeText(input.sportLabel, 40) || (sport === "nba" ? "Basketball NBA" : "Football International");
+  // 30 disciplines : on accepte tout identifiant simple, avec un repli historique.
+  const sport =
+    typeof input.sport === "string" && /^[a-z0-9-]{2,24}$/.test(input.sport) ? input.sport : "football";
+  const sportLabel =
+    sanitizeText(input.sportLabel, 40) || (sport === "nba" ? "Basketball NBA" : "Football International");
   const title = sanitizeText(input.title, 90) || "Mon classement GOAT";
   const controversy = Math.max(0, Math.min(100, Math.round(Number(input.controversy) || 0)));
   const controversyLabel = sanitizeText(input.controversyLabel, 60);
@@ -406,7 +409,7 @@ export function listPyramids(options: ListPyramidsOptions = {}): CommunityPyrami
   const offset = Math.max(0, options.offset ?? 0);
 
   let items = readPyramids().filter((pyramid) => includeHidden || !pyramid.hidden);
-  if (sport === "football" || sport === "nba") items = items.filter((pyramid) => pyramid.sport === sport);
+  if (sport && /^[a-z0-9-]{2,24}$/.test(sport)) items = items.filter((pyramid) => pyramid.sport === sport);
   if (userId) items = items.filter((pyramid) => pyramid.userId === userId);
 
   items.sort((a, b) => {

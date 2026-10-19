@@ -55,6 +55,28 @@ data/players.json  base des 400 joueurs (générée, versionnée)
 scripts/           pipeline Wikidata (fetch-players)
 ```
 
+## Base commune de l'écosystème
+
+L'application est enveloppée par **`@alphabette/shell`**, la base commune de
+l'écosystème : barre écosystème (logo alphabette.fr, dons, les autres sites,
+compteur, Pass → paiement) et en-tête d'application (dons, compte, densité
+« BIG », clés d'API, plein écran, bascule jour/nuit).
+
+- Identité du site : **`src/alphabette.app.ts`** (nom, sous-titre, couleur, liens).
+- Enveloppe : **`src/main.tsx`** (`<AppShell app={APP} initialTheme="nuit">`).
+
+En attendant la publication du paquet privé, la dépendance est **liée en local** :
+
+```powershell
+cd "<chemin-du-hub>\packages\shell"
+bun link
+cd "<ce-dossier>"
+bun link @alphabette/shell
+```
+
+Pour tester la synchronisation des tarifs du hub en local, définir
+`VITE_HUB_URL` (sinon le hub distant n'est pas sollicité en développement).
+
 ## Variables d'environnement
 
 | Variable | Rôle |
