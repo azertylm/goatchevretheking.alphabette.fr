@@ -14,6 +14,7 @@
     { "id": "Q152274", "nom": "Edvard Beneš", "sports": ["football"], "raison": "Homme d'État tchécoslovaque — pratique de club, notoriété politique." },
     { "id": "Q213504", "nom": "Charles Scott Sherrington", "sports": ["football"], "raison": "Physiologiste (prix Nobel) — pratique de club, notoriété scientifique." },
     { "id": "Q202693", "nom": "Jo Nesbø", "sports": ["football"], "raison": "Écrivain — pratique amateur, notoriété littéraire." },
+    { "id": "Q122003", "nom": "Julio Iglesias", "sports": ["football"], "raison": "Chanteur — gardien de réserve, aucun match en équipe première ; ses « trophées » recensés sont des récompenses musicales." },
     { "id": "Q172140", "nom": "Michael Crichton", "sports": ["nba"], "raison": "Écrivain et réalisateur — aucun match professionnel, notoriété littéraire." },
     { "id": "Q188018", "nom": "Nick Nolte", "sports": ["nba"], "raison": "Acteur — notoriété cinématographique." },
     { "id": "Q360531", "nom": "Mahershalalhashbaz Ali", "sports": ["nba"], "raison": "Acteur (oscar du meilleur second rôle) — notoriété cinématographique." },
@@ -50,6 +51,14 @@
     { "id": "Q1282471", "nom": "Ed Ricketts", "sports": ["sailing"], "raison": "Biologiste marin — notoriété scientifique." },
     { "id": "Q2747589", "nom": "James H. Snook", "sports": ["shooting"], "raison": "Vétérinaire — participation olympique sans médaille, notoriété extra-sportive." },
     { "id": "Q3546180", "nom": "Jonathan Katz", "sports": ["table-tennis"], "raison": "Acteur et comédien — aucun palmarès." },
-    { "id": "Q311793", "nom": "Aga Khan IV", "sports": ["alpine-skiing"], "raison": "Imam et philanthrope — participation olympique sans médaille, notoriété religieuse." }
+    { "id": "Q311793", "nom": "Aga Khan IV", "sports": ["alpine-skiing"], "raison": "Imam et philanthrope — participation olympique sans médaille, notoriété religieuse." },
+    { "id": "Q60772", "nom": "Ursula von der Leyen", "sports": ["equestrian"], "raison": "Femme politique et médecin — équitation de loisir, notoriété politique et institutionnelle." },
+    { "id": "Q75748", "nom": "Hans Tietmeyer", "sports": ["table-tennis"], "raison": "Président de la Bundesbank — pratique amateur, notoriété financière." },
+    { "id": "Q206421", "nom": "Constantinos Stephanopoulos", "sports": ["swimming"], "raison": "Président de la République grecque — natation amateur, « trophées » = décorations d'État." },
+    { "id": "Q186492", "nom": "George Patton", "sports": ["swimming"], "raison": "Général — le pentathlon olympique 1912 n'en fait pas un nageur ; « trophées » = décorations militaires." },
+    { "id": "Q348780", "nom": "Douglas Bader", "sports": ["cricket"], "raison": "As de l'aviation — cricket scolaire et militaire, notoriété militaire." },
+    { "id": "Q12940", "nom": "Jacques Chaban-Delmas", "sports": ["rugby", "tennis"], "raison": "Premier ministre français — rugby de club et tennis universitaire, notoriété politique." },
+    { "id": "Q155928", "nom": "Avery Brundage", "sports": ["nba"], "raison": "Dirigeant olympique — aucune pratique du basket-ball documentée (athlète de décathlon)." },
+    { "id": "Q486359", "nom": "Manny Pacquiao", "sports": ["nba"], "raison": "Boxeur — passage médiatique en ligue philippine, notoriété pugilistique (conservé en boxe)." }
   ]
 }

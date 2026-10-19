@@ -202,38 +202,38 @@ Effectifs vérifiés dans `data/sports/` (table générée par
 
 | Discipline | Athlètes | Carrières estimées |
 |---|---:|---:|
+| Aviron | 500 | 490 (98 %) |
 | Badminton | 500 | 491 (98 %) |
-| Sports équestres | 500 | 489 (98 %) |
-| Formule 1 | 500 | 420 (84 %) |
+| Basketball NBA | 500 | 11 (2 %) |
+| Cricket | 500 | 38 (8 %) |
 | Football International | 500 | 0 (0 %) |
+| Formule 1 | 500 | 420 (84 %) |
 | Gymnastique | 500 | 484 (97 %) |
+| Haltérophilie | 500 | 481 (96 %) |
 | Handball | 500 | 329 (66 %) |
 | Judo | 500 | 469 (94 %) |
-| Aviron | 500 | 490 (98 %) |
-| Voile | 500 | 482 (96 %) |
-| Patinage de vitesse | 500 | 448 (90 %) |
-| Tennis | 500 | 18 (4 %) |
-| Volley-ball | 500 | 260 (52 %) |
-| Haltérophilie | 500 | 481 (96 %) |
 | Lutte | 500 | 422 (84 %) |
-| Ski alpin | 499 | 484 (97 %) |
+| Natation | 500 | 475 (95 %) |
+| Patinage de vitesse | 500 | 448 (90 %) |
+| Rugby | 500 | 68 (14 %) |
+| Sports équestres | 500 | 489 (98 %) |
+| Tennis | 500 | 18 (4 %) |
+| Tennis de table | 500 | 436 (87 %) |
+| Voile | 500 | 482 (96 %) |
+| Volley-ball | 500 | 260 (52 %) |
 | Boxe | 499 | 423 (85 %) |
-| Cricket | 499 | 38 (8 %) |
 | Cyclisme | 499 | 66 (13 %) |
 | Escrime | 499 | 488 (98 %) |
-| Patinage artistique | 499 | 463 (93 %) |
 | Golf | 499 | 433 (87 %) |
-| Basketball NBA | 499 | 12 (2 %) |
+| Patinage artistique | 499 | 463 (93 %) |
+| Ski alpin | 499 | 484 (97 %) |
 | Tir sportif | 499 | 486 (97 %) |
-| Tennis de table | 499 | 435 (87 %) |
 | Athlétisme | 498 | 341 (68 %) |
 | Hockey sur glace | 498 | 385 (77 %) |
-| Rugby | 498 | 68 (14 %) |
-| Natation | 498 | 473 (95 %) |
 | Snowboard | 374 | 371 (99 %) |
 | Tir à l'arc | 341 | 334 (98 %) |
 
-**Total : 14 697 profils · 72 % de carrières estimées · 14 disciplines à 500.**
+**Total : 14704 profils · 72 % de carrières estimées · 19 disciplines à 500.**
 
 Trois raisons expliquent les disciplines sous la barre des 500 :
 
@@ -241,17 +241,21 @@ Trois raisons expliquent les disciplines sous la barre des 500 :
    500 personnes à la fois classées dans la discipline (P106), dotées d'une photo
    (P18) et d'un nom exploitable. Inutile de relancer la génération : elle
    redonnera les mêmes effectifs.
-2. **Curation** — les disciplines touchées par la liste d'exclusion perdent de 1
-   à 6 profils. Football, Sports équestres, Voile et NBA ont été recomplétés à
-   500 (NBA à 499 après retrait d'un intrus apparu dans le lot de recomplètement,
-   Arik Einstein) :
+2. **Curation** — les disciplines touchées par la liste d'exclusion (52 entrées)
+   perdent de 1 à 6 profils. Après la purge de neuf personnalités dont la
+   notoriété vient d'ailleurs (Julio Iglesias, Ursula von der Leyen, Hans
+   Tietmeyer, Constantinos Stephanopoulos, George Patton, Douglas Bader, Jacques
+   Chaban-Delmas, Avery Brundage, Manny Pacquiao), les huit disciplines
+   concernées ont été recomplétées à 500 :
    ```powershell
    bun run generate:sports -- --sport=football
    ```
-   Le générateur reprend alors les candidats suivants par notoriété, **en
-   appliquant la liste d'exclusion**. Attention : la fin du classement de
-   notoriété contient encore du bruit (un intrus tous les ~500 profils dans nos
-   essais) — relancer `probe-intruders.mjs` après un recomplètement.
+   Football, cricket, sports équestres, NBA, rugby, natation, tennis de table et
+   tennis sont ainsi revenus à 500. Le générateur reprend alors les candidats
+   suivants par notoriété, **en appliquant la liste d'exclusion**. Attention : la
+   fin du classement de notoriété contient encore du bruit (un intrus tous les
+   ~500 profils dans nos essais) — relancer `probe-intruders.mjs` après un
+   recomplètement.
 3. **Carrières estimées** — Wikidata ne date ni le début ni la fin de carrière
    des sportifs individuels ; le générateur se rabat sur la naissance + 18 ans
    (`careerEstimated: true`). Le taux atteint 98 % pour le badminton ou

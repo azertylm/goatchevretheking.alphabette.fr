@@ -7,6 +7,7 @@ import { usePyramidState } from './usePyramidState';
 import { PyramidBoard } from './PyramidBoard';
 import { ReserveDrawer } from './ReserveDrawer';
 import { DuelExpress } from './DuelExpress';
+import { GameHub } from './GameHub';
 import { addCrottins } from './useGoatProgression';
 import { ControversyGauge } from './ControversyGauge';
 import { SharePanel } from './SharePanel';
@@ -173,6 +174,9 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({
 
       {/* Mini-jeu : 10 duels rapides, vainqueurs pré-placés au sommet */}
       <DuelExpress api={api} pool={pool} />
+
+      {/* Menu de jeu : Défi Chrono, Duels d'époques, Duel du jour, quiz, Bouc Émissaire */}
+      <GameHub sport={sport} pool={pool} api={api} />
 
       {/* Jauge de controverse : verdict quand la pyramide est complète */}
       <ControversyGauge

@@ -25,7 +25,15 @@ export const GOAT_RANKS: GoatRank[] = [
   { threshold: 500, title: 'GOAT Suprême', blason: '🏆' },
 ];
 
-export type CrottinGainReason = 'duel' | 'pyramide';
+export type CrottinGainReason =
+  | 'duel'
+  | 'pyramide'
+  /** Modes de jeu : Défi Chrono, Duels d'époques, Duel du jour, Quiz, Bouc Émissaire. */
+  | 'chrono'
+  | 'epoques'
+  | 'jour'
+  | 'quiz'
+  | 'bouc';
 
 export interface GoatProgressionState {
   /** Solde dépensable de Crottins d'Or. */

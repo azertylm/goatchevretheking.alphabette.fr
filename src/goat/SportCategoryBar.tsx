@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CheckCircle2, ChevronLeft, ChevronRight, Search, Trophy, Volume2, VolumeX, X } from 'lucide-react';
+import { CheckCircle2, ChevronLeft, ChevronRight, Gamepad2, Search, Trophy, Volume2, VolumeX, X } from 'lucide-react';
 import { SPORTS, type SportId, getSport } from './sportsCatalog';
 import { pyramidStoreRevision, readPyramidProgress, subscribePyramidStore } from './pyramidModel';
 import { pastureAudio } from './pastureAudio';
@@ -109,6 +109,21 @@ export const SportCategoryBar: React.FC<SportCategoryBarProps> = ({
 
   const activeSport = getSport(value);
 
+  /**
+   * Menu de jeu : la barre ne duplique pas les modes, elle amène au menu
+   * « Les jeux du pâturage » et place le focus sur le premier onglet.
+   */
+  const openGames = () => {
+    const target = document.getElementById('jeux-du-paturage');
+    if (!target) return;
+    // Saut **instantané** obligatoire : `<html class="scroll-smooth">` anime tous
+    // les défilements, et une animation traverserait la réserve (défilement
+    // infini) — le chargement de nouveaux blocs repousserait la cible sous le pli.
+    target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    target.querySelector<HTMLButtonElement>('[role="tablist"] [role="tab"]')?.focus({ preventScroll: true });
+    pastureAudio.playBell(660);
+  };
+
   return (
     <section
       aria-label="Choix de la discipline"
@@ -149,6 +164,15 @@ export const SportCategoryBar: React.FC<SportCategoryBarProps> = ({
                 }`
               : `${SPORTS.length} disciplines`}
           </span>
+          <button
+            type="button"
+            onClick={openGames}
+            title="Ouvrir les jeux du pâturage (Défi Chrono, Duels d'époques, Duel du jour, quiz, Bouc Émissaire)"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-amber-400/30 bg-amber-400/10 px-2.5 py-2 text-[11px] font-black text-amber-200 transition-colors hover:bg-amber-400/20 cursor-pointer"
+          >
+            <Gamepad2 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Jeux</span>
+          </button>
           <button
             type="button"
             onClick={toggleSound}

@@ -156,7 +156,11 @@ export const ReserveDrawer: React.FC<ReserveDrawerProps> = ({
         if (!entries.some((entry) => entry.isIntersecting)) return;
         setLimit((current) => (current >= filtered.length ? current : current + PAGE_SIZE));
       },
-      { rootMargin: '500px 0px' },
+      // Préchargement uniquement **vers le bas** : avec une marge haute, le
+      // sentinelle située juste au-dessus de l'écran continuait de charger des
+      // blocs quand on sautait aux jeux du pâturage (situés sous la réserve),
+      // ce qui repoussait la cible du saut sous le pli.
+      { rootMargin: '0px 0px 200px 0px' },
     );
 
     observer.observe(node);
