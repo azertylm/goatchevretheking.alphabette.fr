@@ -13,6 +13,7 @@
     "lint": "tsc --noEmit",
     "fetch:players": "tsx scripts/fetch-players.ts",
     "generate:sports": "tsx scripts/generate-sports-data.ts",
+    "prune:athletes": "tsx scripts/prune-blocked-athletes.ts",
     "check:filters": "tsx scripts/check-decade-filters.ts"
   },
   "dependencies": {

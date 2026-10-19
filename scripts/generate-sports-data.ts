@@ -19,6 +19,10 @@
  *      des carrières en cours (`isCurrentlyCompeting`), marque « légende ».
  *   4. Écriture d'un JSON par discipline + `data/sports/index.json` (sommaire).
  *
+ * Un filtre éditorial (`data/sports/blocklist.json`) écarte les personnalités
+ * dont la notoriété vient d'ailleurs (physiciens, chefs d'État, acteurs…) et
+ * dont Wikidata atteste pourtant une licence dans la discipline.
+ *
  * Sources : Wikidata (CC0) et Wikimedia Commons (licences libres).
  */
 
@@ -68,6 +72,52 @@ function readArg(name: string): string | undefined {
 const onlySport = readArg('sport');
 const target = Number(readArg('target') ?? DEFAULT_TARGET) || DEFAULT_TARGET;
 const forcedMinLinks = readArg('min-links') ? Number(readArg('min-links')) : null;
+
+// --------------------------------------------------------------------------
+// Liste d'exclusion curatorée (data/sports/blocklist.json)
+// --------------------------------------------------------------------------
+
+interface BlocklistEntry {
+  id: string;
+  nom?: string;
+  /** Disciplines concernées ; absent = toutes. */
+  sports?: string[];
+  raison?: string;
+}
+
+/**
+ * Personnalités dont la notoriété vient d'ailleurs et dont la pratique de la
+ * discipline est anecdotique (voir le critère détaillé dans le fichier).
+ * Wikidata les classe bien dans la discipline : ce filtre est un choix
+ * éditorial assumé, pas une correction de données.
+ */
+function loadBlocklist(): Map<string, Set<string>> {
+  const file = path.join(OUTPUT_DIR, 'blocklist.json');
+  const blocked = new Map<string, Set<string>>();
+  if (!fs.existsSync(file)) return blocked;
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(file, 'utf-8').replace(/^\uFEFF/, '')) as {
+      exclus?: BlocklistEntry[];
+    };
+    for (const entry of parsed.exclus ?? []) {
+      if (!entry?.id) continue;
+      blocked.set(entry.id, new Set(entry.sports ?? []));
+    }
+  } catch (err: any) {
+    console.warn(`   ⚠ liste d'exclusion illisible : ${err?.message}`);
+  }
+  return blocked;
+}
+
+const BLOCKED = loadBlocklist();
+
+/** Vrai si la personnalité est exclue de cette discipline. */
+function isBlocked(qid: string, sport: string): boolean {
+  const sports = BLOCKED.get(qid);
+  if (!sports) return false;
+  return sports.size === 0 || sports.has(sport);
+}
 
 // --------------------------------------------------------------------------
 // Accès Wikidata
@@ -429,7 +479,14 @@ async function collectSport(sport: SportDefinition): Promise<AthleteProfile[]> {
     if (athletes.length >= target) break;
 
     const candidates = await discoverAt(sport, minLinks, limit);
-    const ranked = [...candidates.entries()].sort((a, b) => b[1] - a[1]);
+    const ranked = [...candidates.entries()]
+      .filter(([qid]) => !isBlocked(qid, sport.id))
+      .sort((a, b) => b[1] - a[1]);
+    if (ranked.length < candidates.size) {
+      console.log(
+        `   · liste d'exclusion : ${candidates.size - ranked.length} candidat(s) écarté(s)`,
+      );
+    }
 
     // On détaille avec une marge confortable : beaucoup de profils seront
     // écartés faute de photo ou de carrière exploitable.
@@ -464,7 +521,9 @@ async function collectSport(sport: SportDefinition): Promise<AthleteProfile[]> {
     console.log(`   · complément : ${target - athletes.length} profils à trouver`);
 
     const candidates = await discoverAt(sport, 1, limit);
-    const ranked = [...candidates.entries()].sort((a, b) => b[1] - a[1]);
+    const ranked = [...candidates.entries()]
+      .filter(([qid]) => !isBlocked(qid, sport.id))
+      .sort((a, b) => b[1] - a[1]);
 
     const fresh = ranked
       .map(([qid]) => qid)
@@ -538,6 +597,9 @@ function writeIndex(known: Map<string, { sport: string; label: string; count: nu
 async function main(): Promise<void> {
   console.log('🐐 Goat Chèvre The King — génération des bases par discipline');
   console.log(`   cible : ${target} athlètes · ${onlySport ? `discipline ${onlySport}` : `${SPORTS.length} disciplines`}`);
+  if (BLOCKED.size > 0) {
+    console.log(`   liste d'exclusion : ${BLOCKED.size} personnalité(s) hors sport`);
+  }
 
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 

@@ -103,6 +103,46 @@ une preuve d'activité sportive** :
 Sans ces trois preuves, la fiche passe dans le **complément** (ci-dessous) et sa
 carrière est marquée comme estimée.
 
+### Liste d'exclusion curatorée (`data/sports/blocklist.json`)
+
+Le contrôle précédent laisse passer une seconde famille d'intrus : des
+personnalités dont la notoriété vient d'ailleurs et que Wikidata dote malgré tout
+d'une licence dans la discipline — Niels Bohr footballeur à l'Akademisk
+Boldklub, Viktor Orbán joueur amateur, Michael Crichton, Nick Nolte, George
+Floyd, Bud Spencer, Vera Wang…
+
+**Aucun filtre automatique n'est fiable ici.** La propriété « champ
+d'activité » (P101) écarterait à tort Niki Lauda (champ d'activité déclaré :
+« management sportif ») ; la propriété « œuvre notable » (P800) écarterait à tort
+Dick Fosbury (le Fosbury-flop), Milkha Singh (son autobiographie) ou Charles
+Barkley (*Space Jam*). L'exclusion est donc **curatée à la main**, dans un
+fichier transparent et modifiable :
+
+```json
+{ "id": "Q7085", "nom": "Niels Bohr", "sports": ["football"], "raison": "…" }
+```
+
+- `sports` absent ⇒ exclusion de **toutes** les disciplines ;
+- le critère est écrit dans le fichier : notoriété publique **principalement
+  extra-sportive** *et* pratique **anecdotique** de la discipline ;
+- les champions devenus scientifiques, politiques ou écrivains après leur
+  carrière sont **conservés** (Ketevan Losaberidze, Alfréd Hajós, Jacques Ochs,
+  Benjamin Spock, Caldwell Esselstyn, Hermann von Oppeln-Bronikowski…) ;
+- les cas limites retenus (Dirk Stikker et Hans Riegel, vainqueurs de titres
+  réels en badminton) sont listés dans le champ
+  `_conserves_notoriete_extra_sportive` du fichier.
+
+Le filtre est appliqué **à la génération** (`isBlocked()` dans
+`scripts/generate-sports-data.ts`) **et à la purge** des fichiers existants :
+
+```powershell
+bun run prune:athletes                       # retire les profils déjà générés
+bun run generate:sports -- --sport=football  # recomplète ensuite à 500
+```
+
+Pour réintégrer une personnalité : supprimer sa ligne du fichier et relancer la
+génération de la discipline concernée.
+
 ### Complément des disciplines à faible couverture
 
 Une discipline très peu documentée sur Wikidata (voile, snowboard, sports
@@ -154,3 +194,67 @@ bascule géographique) au-dessus de la grille.
 **Les filtres ne touchent que la liste affichée** : l'état de la pyramide
 (placements, Hot Take, mode expert) n'est jamais modifié par un changement de
 filtre. Un joueur déjà placé reste sur la pyramide même s'il sort du filtre.
+
+## 6. Couverture réelle des disciplines
+
+Effectifs vérifiés dans `data/sports/` (table générée par
+`coverage-table.mjs`, à relancer après toute régénération) :
+
+| Discipline | Athlètes | Carrières estimées |
+|---|---:|---:|
+| Badminton | 500 | 491 (98 %) |
+| Sports équestres | 500 | 489 (98 %) |
+| Formule 1 | 500 | 420 (84 %) |
+| Football International | 500 | 0 (0 %) |
+| Gymnastique | 500 | 484 (97 %) |
+| Handball | 500 | 329 (66 %) |
+| Judo | 500 | 469 (94 %) |
+| Aviron | 500 | 490 (98 %) |
+| Voile | 500 | 482 (96 %) |
+| Patinage de vitesse | 500 | 448 (90 %) |
+| Tennis | 500 | 18 (4 %) |
+| Volley-ball | 500 | 260 (52 %) |
+| Haltérophilie | 500 | 481 (96 %) |
+| Lutte | 500 | 422 (84 %) |
+| Ski alpin | 499 | 484 (97 %) |
+| Boxe | 499 | 423 (85 %) |
+| Cricket | 499 | 38 (8 %) |
+| Cyclisme | 499 | 66 (13 %) |
+| Escrime | 499 | 488 (98 %) |
+| Patinage artistique | 499 | 463 (93 %) |
+| Golf | 499 | 433 (87 %) |
+| Basketball NBA | 499 | 12 (2 %) |
+| Tir sportif | 499 | 486 (97 %) |
+| Tennis de table | 499 | 435 (87 %) |
+| Athlétisme | 498 | 341 (68 %) |
+| Hockey sur glace | 498 | 385 (77 %) |
+| Rugby | 498 | 68 (14 %) |
+| Natation | 498 | 473 (95 %) |
+| Snowboard | 374 | 371 (99 %) |
+| Tir à l'arc | 341 | 334 (98 %) |
+
+**Total : 14 697 profils · 72 % de carrières estimées · 14 disciplines à 500.**
+
+Trois raisons expliquent les disciplines sous la barre des 500 :
+
+1. **Plafond Wikidata** — le snowboard (374) et le tir à l'arc (341) n'ont pas
+   500 personnes à la fois classées dans la discipline (P106), dotées d'une photo
+   (P18) et d'un nom exploitable. Inutile de relancer la génération : elle
+   redonnera les mêmes effectifs.
+2. **Curation** — les disciplines touchées par la liste d'exclusion perdent de 1
+   à 6 profils. Football, Sports équestres, Voile et NBA ont été recomplétés à
+   500 (NBA à 499 après retrait d'un intrus apparu dans le lot de recomplètement,
+   Arik Einstein) :
+   ```powershell
+   bun run generate:sports -- --sport=football
+   ```
+   Le générateur reprend alors les candidats suivants par notoriété, **en
+   appliquant la liste d'exclusion**. Attention : la fin du classement de
+   notoriété contient encore du bruit (un intrus tous les ~500 profils dans nos
+   essais) — relancer `probe-intruders.mjs` après un recomplètement.
+3. **Carrières estimées** — Wikidata ne date ni le début ni la fin de carrière
+   des sportifs individuels ; le générateur se rabat sur la naissance + 18 ans
+   (`careerEstimated: true`). Le taux atteint 98 % pour le badminton ou
+   l'escrime, mais tombe à 0–4 % pour le football, la NBA et le tennis, dont les
+   affiliations de club (P54) sont bien documentées. Le taux est affiché dans la
+   réserve quand des profils estimés sont présents.

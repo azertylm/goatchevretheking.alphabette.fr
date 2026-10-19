@@ -64,7 +64,14 @@ export function createGoatSportsRouter(): Router {
     }
 
     try {
-      res.json(readJsonFile(filePath));
+      // Le dossier contient aussi des fichiers de service (`blocklist.json`) :
+      // seuls les documents porteurs d'une liste `athletes` sont des bases.
+      const payload = readJsonFile(filePath) as { athletes?: unknown };
+      if (!Array.isArray(payload?.athletes)) {
+        res.status(404).json({ error: `Aucune base pour la discipline « ${sport} ».` });
+        return;
+      }
+      res.json(payload);
     } catch {
       res.status(500).json({ error: `Base de « ${sport} » illisible.` });
     }

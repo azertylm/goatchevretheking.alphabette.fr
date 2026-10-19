@@ -32,3 +32,12 @@ bun run build   # build de production
 - Vitrine : <https://alphabette.fr>
 - Le hub est la source de vérité des tarifs (`/api/config.json`) : 15 €/app/an,
   40 €/écosystème/an, 7 jours d'essai.
+
+## Règle nº 8 — Synchro GitHub systématique
+
+À chaque fin de tâche (et a fortiori de session), committer puis pousser
+automatiquement chaque projet modifié dans son dépôt GitHub dédié
+(règle nº 2) — au fur et à mesure du travail, sans attendre un ordre.
+Le hub et les applications vivent dans des dépôts distincts : toujours
+pousser chaque dossier dans LE bon dépôt. Ne jamais considérer une
+livraison terminée tant qu'elle n'est pas sur GitHub.

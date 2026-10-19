@@ -14,9 +14,11 @@ import { SPORTS, isSportId, getSport, type SportId } from './sportsCatalog';
 import type { GoatPlayer } from './types';
 
 // Modules JSON importés à la demande (un chunk par discipline).
-const datasetLoaders = import.meta.glob<SportDataset>('../../data/sports/*.json', {
-  import: 'default',
-});
+// `blocklist.json` vit dans le même dossier mais n'est pas une base : exclu.
+const datasetLoaders = import.meta.glob<SportDataset>(
+  ['../../data/sports/*.json', '!../../data/sports/blocklist.json'],
+  { import: 'default' },
+);
 
 const indexLoader = import.meta.glob<SportsIndex>('../../data/sports/index.json', {
   import: 'default',

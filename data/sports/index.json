@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-19T12:08:46.182Z",
+  "generatedAt": "2026-10-19T12:41:10.107Z",
   "targetPerSport": 500,
-  "totalAthletes": 14719,
+  "totalAthletes": 14697,
   "sports": [
     {
       "sport": "football",
@@ -11,7 +11,7 @@
     {
       "sport": "nba",
       "label": "Basketball NBA",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "tennis",
@@ -21,17 +21,17 @@
     {
       "sport": "swimming",
       "label": "Natation",
-      "count": 500
+      "count": 498
     },
     {
       "sport": "table-tennis",
       "label": "Tennis de table",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "rugby",
       "label": "Rugby",
-      "count": 500
+      "count": 498
     },
     {
       "sport": "handball",
@@ -41,12 +41,12 @@
     {
       "sport": "athletics",
       "label": "Athlétisme",
-      "count": 500
+      "count": 498
     },
     {
       "sport": "cycling",
       "label": "Cyclisme",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "judo",
@@ -56,7 +56,7 @@
     {
       "sport": "boxing",
       "label": "Boxe",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "f1",
@@ -71,17 +71,17 @@
     {
       "sport": "golf",
       "label": "Golf",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "ice-hockey",
       "label": "Hockey sur glace",
-      "count": 500
+      "count": 498
     },
     {
       "sport": "cricket",
       "label": "Cricket",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "badminton",
@@ -96,7 +96,7 @@
     {
       "sport": "fencing",
       "label": "Escrime",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "rowing",
@@ -116,7 +116,7 @@
     {
       "sport": "alpine-skiing",
       "label": "Ski alpin",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "snowboarding",
@@ -126,7 +126,7 @@
     {
       "sport": "figure-skating",
       "label": "Patinage artistique",
-      "count": 500
+      "count": 499
     },
     {
       "sport": "speed-skating",
@@ -146,12 +146,12 @@
     {
       "sport": "archery",
       "label": "Tir à l’arc",
-      "count": 345
+      "count": 341
     },
     {
       "sport": "shooting",
       "label": "Tir sportif",
-      "count": 500
+      "count": 499
     }
   ]
 }
