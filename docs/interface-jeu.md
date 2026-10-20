@@ -104,7 +104,8 @@ notoriété.
 ```
 { best: { "chrono:football": { score, at } }, plays: { chrono: 1 },
   streak: { count, best, lastDay },
-  dailyVotes: { "2026-10-19:football": { day, sport, choiceId } } }
+  dailyVotes: { "2026-10-19:football": { day, sport, choiceId } },
+  history: [ { mode, sport, score, at } ] }   // 30 dernières parties
 ```
 
 **Déterminisme.** `hashString` (FNV-1a) + `mulberry32` : le Duel du jour se
@@ -120,3 +121,99 @@ aujourd'hui »). Brancher des votes réels ne demande que de relayer
 `epoques`, `jour`, `quiz`, `bouc`) ; chaque affrontement ou manche inscrit les
 joueurs rencontrés dans l'album Panini (`discoverVignettes`). Les sons du
 chrono, du quiz et du bouc réutilisent `pastureAudio` (anti-saturation 110 ms).
+
+## 7. Viralité, exports et vitrine
+
+### 7.1 Liens de défi sans serveur (`challenge.ts`)
+
+Tout l'état utile voyage dans l'URL, encodé en **base64url** (JSON compact) :
+
+| Paramètre | Contenu | Écran |
+|---|---|---|
+| `?p=…` | pyramide complète (discipline, cases, Hot Take, mode expert, pseudo) | bandeau « Défi reçu » au-dessus de la pyramide |
+| `?d=…` | un duel (deux identifiants, choix de l'auteur, pseudo) | bandeau violet en tête des jeux du pâturage |
+
+- **Riposter** (`?p=`) : `usePyramidState.adopt()` remplace la pyramide de la
+  discipline par celle du lien, après confirmation explicite. Seuls les
+  identifiants présents dans la base locale sont repris.
+- **Duel reçu** (`?d=`) : les deux cartes sont affichées, le vote est comparé au
+  choix de l'auteur (« même choix » / « pas d'accord »), et le duel peut être
+  retransmis tel quel.
+- Les paramètres sont retirés de l'URL (`history.replaceState`) dès que le défi
+  est adopté, ignoré ou fermé. Les liens utilisent `window.location.origin`, donc
+  fonctionnent aussi en aperçu local.
+
+### 7.2 Exports (`SharePanel.tsx`, `shareImage.ts`, `redditExport.ts`)
+
+| Export | Taille | Contenu |
+|---|---|---|
+| Story | 1080 × 1920 | pyramide, Hot Take, controverse, QR |
+| Carré | 1080 × 1080 | idem, format réseaux |
+| Affiche A4 | 2480 × 3508 | story encadrée sur papier crème + palmarès + QR (imprimable 300 dpi) |
+| Carte du GOAT | 1080 × 1920 | vignette 3:4 du GOAT ultime, rang au classement standard, QR |
+| Texte Reddit | Markdown | étages, Hot Take, controverse, lien de contestation (`buildRedditMarkdown`, copie ou `.md`) |
+
+Le bouton **Partager…** utilise `navigator.share` avec le fichier PNG et le lien
+de contestation ; sans partage natif (ou sans `canShare({ files })`), le lien est
+copié dans le presse-papiers. Aucune image n'est envoyée à un serveur.
+
+### 7.3 Vitrine (`ViralPanel.tsx`, `collector.ts`)
+
+Section `#ma-vitrine`, montée après le partage dans `PyramidStage` :
+
+- **Succès** — dix objectifs (`achievements.ts`, clé `goat_achievements_v1`),
+  débloqués une fois pour toutes, avec barres de progression et notifications
+  (`AchievementToasts.tsx`). Définitions : premier duel, 20 duels au chrono,
+  24 points au quiz, 8 maillons faibles, 7 votes conformes, série de 7 jours,
+  100 vignettes, une pyramide complète, 500 Crottins, 5 disciplines jouées.
+- **Badges de décennies** — `decadeBadges()` croise la pyramide active et les
+  débuts de carrière : bronze dès 1 joueur, or à partir de 3, sur 1930 → 2020.
+- **Tableau d'honneur** — `honorBoard()` : les trois meilleurs records de
+  l'utilisateur par mode, toutes disciplines (les scores d'un même mode sont
+  comparables).
+- **Bilan** — parties, disciplines, pyramides finies, places posées, vignettes,
+  meilleure série de jours.
+- **Boutique** — trois cadres cosmétiques (`cosmetics.ts`, clé
+  `goat_cosmetics_v1`) : or (30 🪙), croûte fleurie (60), néon (100). L'achat
+  dépense des Crottins **dépensables** (`spendCrottins`) sans toucher au score
+  cumulé ni au rang. Le cadre actif est appliqué globalement via
+  `body[data-goat-frame]` (aucune souscription par carte).
+- **Historique** — les six dernières parties (`history`), avec « Rejouer » qui
+  ouvre le mode correspondant.
+- **Installation** — `beforeinstallprompt` capturé : bouton « Installer
+  maintenant » quand le navigateur le propose.
+
+### 7.4 Confort de jeu
+
+- **Raccourcis clavier** (`useGameKeys.ts`) : `←`/`A` et `→`/`D` pour voter,
+  `S` pour passer (chrono), `1–6` pour les vignettes (quiz, Bouc Émissaire),
+  `Entrée` pour enchaîner. Les champs de saisie et les combinaisons
+  Ctrl/Alt/Meta sont ignorés. Rappel affiché sous le menu de jeu.
+- **Surprise** — le bouton 🎲 de la barre de disciplines tire une discipline et
+  un mode au hasard (`playRequest.ts`, demande mémorisée au niveau du module :
+  elle survit au démontage du menu pendant le chargement de la base).
+- **Flamme de série** — l'en-tête affiche la série de jours du Duel du jour dès
+  qu'elle est non nulle.
+- **Mascotte** (`MascotBuddy.tsx`) — chèvre flottante : clic = réplique + bêlement,
+  raccourcis vers « Surprise », la vitrine et le bêlement. Elle ne s'ouvre jamais
+  toute seule.
+
+### 7.5 Application installable
+
+`public/manifest.webmanifest`, `public/icon.svg`, `public/icon-maskable.svg` et
+`public/sw.js` (enregistré **en production seulement**, `src/main.tsx`).
+Le service worker sert le réseau d'abord pour les navigations et les JSON de
+données (classements frais), le cache d'abord pour les assets construits, et
+ignore `/api/*`. Après la première visite, le pâturage reste jouable hors-ligne.
+
+### 7.6 Clés de stockage
+
+| Clé | Contenu |
+|---|---|
+| `goat_games_v1` | records, parties, série, votes du jour, historique |
+| `goat_achievements_v1` | succès débloqués (identifiant → date) |
+| `goat_cosmetics_v1` | cadres possédés + cadre actif |
+| `goat_pyramid_<sport>` | une pyramide par discipline |
+| `goat_progression_v1` | Crottins dépensables + score cumulé |
+| `goat_panini_v1` | vignettes découvertes |
+

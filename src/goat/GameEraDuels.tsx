@@ -24,6 +24,7 @@ import {
   recordGame,
   standardWinner,
 } from './gameModes';
+import { useGameKeys } from './useGameKeys';
 
 /**
  * @file GameEraDuels.tsx
@@ -90,6 +91,14 @@ export const GameEraDuels: React.FC<GameModeProps> = ({ sport, pool, api }) => {
     if (!slot) return;
     api.place(slot, player.id);
   };
+
+  // ← / A, → / D pour voter ; Entrée pour enchaîner après la révélation.
+  useGameKeys({
+    enabled: started && Boolean(duel),
+    left: duel && !revealed ? () => vote(duel[0], duel[1]) : undefined,
+    right: duel && !revealed ? () => vote(duel[1], duel[0]) : undefined,
+    next: revealed ? next : undefined,
+  });
 
   if (!started || pairs.length === 0) {
     return (

@@ -9,6 +9,9 @@ import { SportCategoryBar } from './SportCategoryBar';
 import { pastureAudio } from './pastureAudio';
 import { applyStoredSoundPreference } from './soundPreference';
 import { refreshCommunitySession } from '../community/communitySession';
+import { SharedDuel, SharedPyramid, readShareParams } from './challenge';
+import { AchievementToasts, AchievementWatcher } from './AchievementToasts';
+import { MascotBuddy } from './MascotBuddy';
 
 /**
  * @file GoatApp.tsx
@@ -22,7 +25,13 @@ import { refreshCommunitySession } from '../community/communitySession';
  */
 
 export const GoatApp: React.FC = () => {
-  const [sport, setSport] = useState<SportId>(readStoredSport);
+  /** Lien de défi éventuel (`?p=…` pyramide, `?d=…` duel) lu une seule fois. */
+  const [shared] = useState(readShareParams);
+  const [sharedPyramid, setSharedPyramid] = useState<SharedPyramid | null>(shared.pyramid);
+  const [sharedDuel, setSharedDuel] = useState<SharedDuel | null>(shared.duel);
+  const [sport, setSport] = useState<SportId>(
+    () => shared.pyramid?.sport ?? shared.duel?.sport ?? readStoredSport(),
+  );
   const [counts, setCounts] = useState<Partial<Record<SportId, number>>>({});
   /** Recherche unique : elle filtre les disciplines et les joueurs du sport actif. */
   const [query, setQuery] = useState('');
@@ -60,6 +69,7 @@ export const GoatApp: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      <AchievementWatcher />
       <GoatHeader />
 
       {/* Commandes sonores du pâturage : ambiance alpine, bêlements, dialecte */}
@@ -86,6 +96,13 @@ export const GoatApp: React.FC = () => {
             searchQuery={query}
             onSearchQueryChange={setQuery}
             onSearchMatchCount={setMatchCount}
+            sharedPyramid={sharedPyramid}
+            sharedDuel={sharedDuel}
+            onDismissShare={() => {
+              setSharedPyramid(null);
+              setSharedDuel(null);
+            }}
+            onRequestSport={handleSportChange}
           />
         </div>
 
@@ -111,6 +128,10 @@ export const GoatApp: React.FC = () => {
 
       {/* Passerelle vers l'écosystème alphabette.fr */}
       <AlphabetteGateway />
+
+      {/* Succès + mascotte caprine interactive (globaux à l'application) */}
+      <AchievementToasts />
+      <MascotBuddy />
     </div>
   );
 };

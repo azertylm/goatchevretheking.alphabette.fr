@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, CheckCircle2, Flame, Hourglass, Sparkles, Swords } from 'lucide-react';
 import { PlayerCard } from './PlayerCard';
+import { GoatPlayer } from './types';
 import { flagEmoji } from './fallbackAvatar';
 import { pastureAudio } from './pastureAudio';
 import { addCrottins } from './useGoatProgression';
@@ -19,6 +20,7 @@ import {
   standardWinner,
   useGamesState,
 } from './gameModes';
+import { useGameKeys } from './useGameKeys';
 
 /**
  * @file GameDailyDuel.tsx
@@ -57,19 +59,11 @@ export const GameDailyDuel: React.FC<GameModeProps> = ({ sport, pool }) => {
     [yesterdayVote, pool, sport, yesterday],
   );
 
-  if (!pair) {
-    return <p className="text-xs text-slate-500">Il faut au moins deux joueurs dans la discipline.</p>;
-  }
+  const left = pair?.[0];
+  const right = pair?.[1];
 
-  const [left, right] = pair;
-  const picked = vote ? [left, right].find((player) => player.id === vote.choiceId) ?? null : null;
-  const other = vote ? [left, right].find((player) => player.id !== vote.choiceId) ?? null : null;
-  const reference = standardWinner(left, right);
-  const percentLeft = forecastPercent(left, right);
-  const conformes = picked ? picked.id === reference.id : false;
-
-  const choose = (player: (typeof pair)[0], opponent: (typeof pair)[1]) => {
-    if (vote) return;
+  const choose = (player: GoatPlayer, opponent: GoatPlayer) => {
+    if (vote || !pair) return;
     const streakBefore = games.streak.lastDay;
     const nextStreak =
       streakBefore === day
@@ -84,6 +78,23 @@ export const GameDailyDuel: React.FC<GameModeProps> = ({ sport, pool }) => {
     pastureAudio.playBell(990);
     discoverVignettes(sport, [player.id, opponent.id]);
   };
+
+  // ← / A et → / D pour voter le duel du jour.
+  useGameKeys({
+    enabled: Boolean(pair) && !vote,
+    left: left && right ? () => choose(left, right) : undefined,
+    right: left && right ? () => choose(right, left) : undefined,
+  });
+
+  if (!pair || !left || !right) {
+    return <p className="text-xs text-slate-500">Il faut au moins deux joueurs dans la discipline.</p>;
+  }
+
+  const picked = vote ? [left, right].find((player) => player.id === vote.choiceId) ?? null : null;
+  const other = vote ? [left, right].find((player) => player.id !== vote.choiceId) ?? null : null;
+  const reference = standardWinner(left, right);
+  const percentLeft = forecastPercent(left, right);
+  const conformes = picked ? picked.id === reference.id : false;
 
   return (
     <div className="space-y-3">

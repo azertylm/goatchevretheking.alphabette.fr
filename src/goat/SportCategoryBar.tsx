@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CheckCircle2, ChevronLeft, ChevronRight, Gamepad2, Search, Trophy, Volume2, VolumeX, X } from 'lucide-react';
+import { CheckCircle2, ChevronLeft, ChevronRight, Dices, Gamepad2, Search, Trophy, Volume2, VolumeX, X } from 'lucide-react';
 import { SPORTS, type SportId, getSport } from './sportsCatalog';
 import { pyramidStoreRevision, readPyramidProgress, subscribePyramidStore } from './pyramidModel';
 import { pastureAudio } from './pastureAudio';
 import { readSoundEnabled, storeSoundEnabled } from './soundPreference';
+import { requestPlay } from './playRequest';
 
 /**
  * @file SportCategoryBar.tsx
@@ -164,6 +165,23 @@ export const SportCategoryBar: React.FC<SportCategoryBarProps> = ({
                 }`
               : `${SPORTS.length} disciplines`}
           </span>
+          <button
+            type="button"
+            onClick={() => {
+              const next = SPORTS[Math.floor(Math.random() * SPORTS.length)];
+              if (next.id !== value) onChange(next.id);
+              // Petit délai : à changement de discipline, le menu de jeu est
+              // démonté puis remonté après le chargement de la base. La demande
+              // est mémorisée et consommée au montage.
+              window.setTimeout(() => requestPlay('surprise'), 60);
+              pastureAudio.playBell(990);
+            }}
+            title="Surprise : une discipline et un mode de jeu tirés au hasard"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-fuchsia-400/30 bg-fuchsia-400/10 px-2.5 py-2 text-[11px] font-black text-fuchsia-200 transition-colors hover:bg-fuchsia-400/20 cursor-pointer"
+          >
+            <Dices className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Surprise</span>
+          </button>
           <button
             type="button"
             onClick={openGames}

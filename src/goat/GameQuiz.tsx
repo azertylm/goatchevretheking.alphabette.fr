@@ -7,6 +7,7 @@ import { pastureAudio } from './pastureAudio';
 import { addCrottins } from './useGoatProgression';
 import { discoverVignettes } from './usePaniniAlbum';
 import { GameModeProps, decadeOf, recordGame, shuffleWith } from './gameModes';
+import { useGameKeys } from './useGameKeys';
 
 /**
  * @file GameQuiz.tsx
@@ -171,6 +172,13 @@ export const GameQuiz: React.FC<GameModeProps> = ({ sport, pool }) => {
     }
     discoverVignettes(sport, [question.mystery.id, optionId]);
   };
+
+  // 1…6 pour répondre, Entrée pour passer à la question suivante.
+  useGameKeys({
+    enabled: phase === 'playing' && Boolean(question),
+    digits: question && !feedback ? question.options.map((option) => () => answer(option.id)) : undefined,
+    next: feedback ? next : undefined,
+  });
 
   if (phase === 'idle') {
     return (

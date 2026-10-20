@@ -36,6 +36,12 @@ export interface PyramidApi {
   chaosFill: (pool: GoatPlayer[]) => void;
   toggleHotTake: (playerId: string) => void;
   setExpertMode: (enabled: boolean) => void;
+  /** Adopte un classement reçu par lien (`?p=…`) : remplace la pyramide en cours. */
+  adopt: (input: {
+    assignments: Record<string, string>;
+    hotTake?: string | null;
+    expertMode?: boolean;
+  }) => void;
   reset: () => void;
 }
 
@@ -161,6 +167,22 @@ export function usePyramidState(sport: SportId): PyramidApi {
     [update],
   );
 
+  /** Adopte un classement reçu par lien : nouveau point de départ (riposte). */
+  const adopt = useCallback(
+    (input: { assignments: Record<string, string>; hotTake?: string | null; expertMode?: boolean }) => {
+      update((prev) => ({
+        assignments: { ...input.assignments },
+        hotTake:
+          input.hotTake && Object.values(input.assignments).includes(input.hotTake)
+            ? input.hotTake
+            : null,
+        expertMode: input.expertMode ?? prev.expertMode,
+      }));
+      pastureAudio.playRoyalChime();
+    },
+    [update],
+  );
+
   const reset = useCallback(() => {
     clearStoredPyramid(sport);
     setEntry((prev) => ({ sport, pyramid: { ...createEmptyPyramid() } }));
@@ -178,6 +200,7 @@ export function usePyramidState(sport: SportId): PyramidApi {
     chaosFill,
     toggleHotTake,
     setExpertMode,
+    adopt,
     reset,
   };
 }

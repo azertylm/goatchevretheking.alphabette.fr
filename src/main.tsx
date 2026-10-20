@@ -37,6 +37,14 @@ const path = window.location.pathname.replace(/\/+$/, '') || '/';
 const isCommunityRoute = path === '/communaute' || path.startsWith('/communaute/');
 const isModerationRoute = path === '/moderation' || path.startsWith('/moderation/');
 
+// Application installable : le service worker n'est activé qu'en production
+// (en développement, il masquerait les rechargements de Vite).
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+  });
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppShell app={APP} initialTheme="nuit">

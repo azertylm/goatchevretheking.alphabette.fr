@@ -6,6 +6,7 @@ import { pastureAudio } from './pastureAudio';
 import { addCrottins } from './useGoatProgression';
 import { discoverVignettes } from './usePaniniAlbum';
 import { GameModeProps, consensusRanks, recordGame, shuffleWith } from './gameModes';
+import { useGameKeys } from './useGameKeys';
 
 /**
  * @file GameScapegoat.tsx
@@ -93,6 +94,13 @@ export const GameScapegoat: React.FC<GameModeProps> = ({ sport, pool }) => {
     setRound((value) => value + 1);
     draw(usedIds);
   };
+
+  // 1…5 pour désigner une vignette, Entrée pour la manche suivante.
+  useGameKeys({
+    enabled: phase === 'playing' && tiles.length > 0,
+    digits: !result ? tiles.map((tile) => () => pick(tile)) : undefined,
+    next: result ? next : undefined,
+  });
 
   if (pool.length < TILES) {
     return <p className="text-xs text-slate-500">Il faut au moins cinq joueurs dans la discipline.</p>;

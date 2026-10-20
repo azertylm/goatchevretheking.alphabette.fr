@@ -35,6 +35,14 @@ export interface DailyVote {
   choiceId: string;
 }
 
+/** Partie terminée, conservée pour l'historique local (« Rejouer »). */
+export interface GameHistoryEntry {
+  mode: GameModeId;
+  sport: SportId;
+  score: number;
+  at: number;
+}
+
 export interface GamesState {
   /** Meilleur score par entrée `${mode}:${sport}`. */
   best: Record<string, GameRecord>;
@@ -44,6 +52,8 @@ export interface GamesState {
   streak: { count: number; best: number; lastDay: string | null };
   /** Votes du Duel du jour, par entrée `${jour}:${sport}`. */
   dailyVotes: Record<string, DailyVote>;
+  /** Dernières parties (la plus récente en tête, 30 au maximum). */
+  history: GameHistoryEntry[];
 }
 
 /** Propriétés communes à tous les modes de jeu. */
@@ -63,7 +73,23 @@ const EMPTY_STATE: GamesState = {
   plays: {},
   streak: { count: 0, best: 0, lastDay: null },
   dailyVotes: {},
+  history: [],
 };
+
+function parseHistory(value: unknown): GameHistoryEntry[] {
+  if (!Array.isArray(value)) return [];
+  const entries: GameHistoryEntry[] = [];
+  for (const entry of value.slice(0, 30)) {
+    if (!entry || typeof entry !== 'object') continue;
+    const record = entry as Partial<GameHistoryEntry>;
+    if (typeof record.sport !== 'string' || typeof record.mode !== 'string') continue;
+    const score = Math.max(0, Math.floor(Number(record.score) || 0));
+    const at = Math.max(0, Math.floor(Number(record.at) || 0));
+    if (!at) continue;
+    entries.push({ mode: record.mode as GameModeId, sport: record.sport as SportId, score, at });
+  }
+  return entries;
+}
 
 function load(): GamesState {
   if (typeof window === 'undefined') return EMPTY_STATE;
@@ -81,6 +107,7 @@ function load(): GamesState {
       },
       dailyVotes:
         data.dailyVotes && typeof data.dailyVotes === 'object' ? data.dailyVotes : {},
+      history: parseHistory((data as Partial<GamesState>).history),
     };
   } catch {
     return EMPTY_STATE;
@@ -143,6 +170,7 @@ export function recordGame(mode: GameModeId, sport: SportId, score: number): voi
     ...state,
     best: { ...state.best, [key]: best },
     plays: { ...state.plays, [mode]: (state.plays[mode] ?? 0) + 1 },
+    history: [{ mode, sport, score: safeScore, at: Date.now() }, ...state.history].slice(0, 30),
   };
   persist();
   emit();

@@ -6,6 +6,7 @@ import { pastureAudio } from './pastureAudio';
 import { addCrottins } from './useGoatProgression';
 import { discoverVignettes } from './usePaniniAlbum';
 import { GameModeProps, recordGame, shuffleWith } from './gameModes';
+import { useGameKeys } from './useGameKeys';
 
 /**
  * @file GameChrono.tsx
@@ -115,6 +116,14 @@ export const GameChrono: React.FC<GameModeProps> = ({ sport, pool }) => {
   };
 
   const multiplier = 1 + Math.min(4, Math.floor(streak / 3));
+
+  // Raccourcis clavier : ← / A et → / D pour voter, S pour passer.
+  useGameKeys({
+    enabled: phase === 'running' && duel !== null,
+    left: duel ? () => vote(duel[0], duel[1]) : undefined,
+    right: duel ? () => vote(duel[1], duel[0]) : undefined,
+    skip: phase === 'running' ? skip : undefined,
+  });
 
   if (!playable) {
     return <p className="text-xs text-slate-500">Il faut au moins deux joueurs dans la discipline.</p>;

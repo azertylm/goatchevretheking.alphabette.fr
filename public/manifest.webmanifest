@@ -1,0 +1,28 @@
+{
+  "name": "Goat Chèvre The King",
+  "short_name": "Goat",
+  "description": "Élisez votre GOAT : pyramide des légendes du sport, duels, quiz et partage.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c1712",
+  "theme_color": "#0f172a",
+  "lang": "fr",
+  "categories": ["games", "sports", "entertainment"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

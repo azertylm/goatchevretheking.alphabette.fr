@@ -15,6 +15,9 @@ import { CommunityPublish } from '../community/CommunityPublish';
 import { visibleSlotIds } from './pyramidModel';
 import { computeControversy } from './controversy';
 import { getSport } from './sports';
+import { SharedDuel, SharedPyramid, clearShareParams } from './challenge';
+import { PyramidChallengeBanner } from './ChallengeBanners';
+import { ViralPanel } from './ViralPanel';
 
 /**
  * @file PyramidStage.tsx
@@ -33,6 +36,12 @@ interface PyramidStageProps {
   onSearchQueryChange?: (query: string) => void;
   /** Remonte le nombre de joueurs correspondant à la recherche. */
   onSearchMatchCount?: (count: number) => void;
+  /** Défi reçu par lien `?p=…` (pyramide à consulter / riposter). */
+  sharedPyramid?: SharedPyramid | null;
+  /** Duel reçu par lien `?d=…`. */
+  sharedDuel?: SharedDuel | null;
+  onDismissShare?: () => void;
+  onRequestSport?: (sport: SportId) => void;
 }
 
 export const PyramidStage: React.FC<PyramidStageProps> = ({
@@ -41,6 +50,10 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({
   searchQuery,
   onSearchQueryChange,
   onSearchMatchCount,
+  sharedPyramid = null,
+  sharedDuel = null,
+  onDismissShare,
+  onRequestSport,
 }) => {
   const [payload, setPayload] = useState<PlayersPayload | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -151,6 +164,24 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({
 
   return (
     <section aria-label="Espace central : pyramide et réserve" className="max-w-6xl mx-auto px-4 sm:px-6 pb-10 space-y-8">
+      {sharedPyramid && (
+        <PyramidChallengeBanner
+          shared={sharedPyramid}
+          players={pool}
+          currentSport={sport}
+          onAdopt={(input) => {
+            api.adopt(input);
+            clearShareParams();
+            onDismissShare?.();
+          }}
+          onSwitchSport={(next) => onRequestSport?.(next)}
+          onDismiss={() => {
+            clearShareParams();
+            onDismissShare?.();
+          }}
+        />
+      )}
+
       <PyramidBoard
         api={api}
         pool={pool}
@@ -176,7 +207,13 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({
       <DuelExpress api={api} pool={pool} />
 
       {/* Menu de jeu : Défi Chrono, Duels d'époques, Duel du jour, quiz, Bouc Émissaire */}
-      <GameHub sport={sport} pool={pool} api={api} />
+      <GameHub
+        sport={sport}
+        pool={pool}
+        api={api}
+        sharedDuel={sharedDuel}
+        onDismissDuel={() => onDismissShare?.()}
+      />
 
       {/* Jauge de controverse : verdict quand la pyramide est complète */}
       <ControversyGauge
@@ -194,6 +231,15 @@ export const PyramidStage: React.FC<PyramidStageProps> = ({
         controversy={controversy}
         sportLabel={getSport(sport).label}
         expertMode={api.state.expertMode}
+        sport={sport}
+      />
+
+      {/* Vitrine : succès, décennies, tableau d'honneur, boutique, historique */}
+      <ViralPanel
+        sport={sport}
+        players={pool}
+        assignments={visibleAssignments}
+        onRequestSport={onRequestSport}
       />
 
       {/* Communauté : publier sa pyramide et explorer celles des autres */}

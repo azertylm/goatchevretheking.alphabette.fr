@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Crown, Trophy, Users } from 'lucide-react';
+import { Crown, Flame, Trophy, Users } from 'lucide-react';
 import { CrownGoatMascot } from './CrownGoatMascot';
 import { CheesePediaModal } from './CheesePediaModal';
 import { useCommunitySession } from '../community/communitySession';
 import { useGoatProgression } from './useGoatProgression';
+import { useGamesState } from './gameModes';
 
 /**
  * @file GoatHeader.tsx
@@ -19,6 +20,7 @@ export const GoatHeader: React.FC = () => {
   const { user } = useCommunitySession();
   const [fromagidexOpen, setFromagidexOpen] = useState(false);
   const progression = useGoatProgression();
+  const games = useGamesState();
 
   return (
     <header className="relative border-b border-amber-500/20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
@@ -57,6 +59,16 @@ export const GoatHeader: React.FC = () => {
         </div>
 
         <div className="sm:ml-auto shrink-0 flex items-center gap-2 flex-wrap justify-center">
+          {/* Série du Duel du jour (flamme) */}
+          {games.streak.count > 0 && (
+            <div
+              title={`Série de ${games.streak.count} jour${games.streak.count > 1 ? 's' : ''} d’affilée — record : ${games.streak.best}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-orange-400/40 bg-orange-500/10 text-orange-200 text-[11px] font-black whitespace-nowrap"
+            >
+              <Flame className="w-3.5 h-3.5" />
+              {games.streak.count} j
+            </div>
+          )}
           {/* Gamification : rang caprin + solde de Crottins d'Or (pulse au gain) */}
           <div
             key={progression.lastGain?.at ?? 'calme'}

@@ -61,7 +61,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         event.dataTransfer.effectAllowed = 'move';
       }}
       onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden border text-left cursor-pointer select-none touch-manipulation
+      className={`goat-card group relative rounded-2xl overflow-hidden border text-left cursor-pointer select-none touch-manipulation
                   transition-all duration-200 ease-out transform-gpu hover:scale-[1.02] hover:z-10 ${
         isSelected
           ? 'border-amber-400 ring-2 ring-amber-400/60 shadow-lg shadow-amber-500/20'

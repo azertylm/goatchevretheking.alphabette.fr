@@ -33,7 +33,9 @@ export type CrottinGainReason =
   | 'epoques'
   | 'jour'
   | 'quiz'
-  | 'bouc';
+  | 'bouc'
+  /** Achat cosmétique dans la boutique (dépense de Crottins). */
+  | 'achat';
 
 export interface GoatProgressionState {
   /** Solde dépensable de Crottins d'Or. */
@@ -94,6 +96,25 @@ export function addCrottins(amount: number, reason: CrottinGainReason): void {
   };
   persist();
   emit();
+}
+
+/**
+ * Dépense des Crottins d'Or (boutique). Le score cumulé — donc le rang — n'est
+ * jamais entamé : seuls les Crottins **dépensables** le sont.
+ * Retourne `false` si le solde est insuffisant.
+ */
+export function spendCrottins(amount: number): boolean {
+  const cost = Math.max(0, Math.floor(amount));
+  if (cost === 0) return true;
+  if (state.coins < cost) return false;
+  state = {
+    ...state,
+    coins: state.coins - cost,
+    lastGain: { amount: -cost, reason: 'achat', at: Date.now() },
+  };
+  persist();
+  emit();
+  return true;
 }
 
 export function currentRank(): GoatRank {
