@@ -23,7 +23,8 @@
 
 html[data-ab-density='compact'] { font-size: 93.75%; }
 html[data-ab-density='normal']  { font-size: 100%; }
-html[data-ab-density='large']   { font-size: 112.5%; }
+/* « Grand » doit vraiment aider quelqu'un qui voit mal : +31 %, pas un simple réglage de confort. */
+html[data-ab-density='large']   { font-size: 131.25%; }
 
 /* ================================= Coquille ============================== */
 
@@ -90,8 +91,12 @@ html[data-ab-theme='nuit'] .ab-shell {
   background: var(--ab-eco-bg);
   color: var(--ab-eco-ink);
   font-size: 0.78rem;
-  overflow: hidden;
+  /* En grande taille (BIG) sur téléphone, la barre défile au doigt au lieu de couper le Pass. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
+.ab-eco::-webkit-scrollbar { display: none; }
 
 .ab-eco__brand {
   display: inline-flex;
@@ -225,6 +230,15 @@ html[data-ab-theme='nuit'] .ab-shell {
   background: var(--ab-accent);
   color: #fff;
 }
+
+/* BIG : toujours visible, sur tous les écrans, et bien repérable. */
+.ab-btn--big {
+  background: var(--ab-accent);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.ab-btn--big:hover { background: color-mix(in oklab, var(--ab-accent) 85%, #000); }
 .ab-btn--accent:hover { background: color-mix(in oklab, var(--ab-accent) 85%, #000); }
 
 /* Bouton d'action large, utilisé dans les panneaux. */
@@ -807,6 +821,9 @@ html[data-ab-theme='nuit'] .ab-don-carte > .ab-etiquette {
   .ab-eco__sites { display: none; }
   .ab-bar__tagline { display: none; }
   .ab-actions__hide-sm { display: none; }
+  /* Sur téléphone, « Mon Compte » et « Jour / Nuit » gardent leur pictogramme :
+     la place gagnée sert à BIG, qui ne doit jamais disparaître. */
+  .ab-btn__texte-large { display: none; }
 }
 
 /* Téléphones : la barre application doit tenir sur une seule ligne sans que le

@@ -91,13 +91,13 @@ export function AppHeader({
           title="Mon compte alphabette"
         >
           <IconUser width={14} height={14} />
-          <span>Mon Compte</span>
+          <span className="ab-btn__texte-large">Mon Compte</span>
           <span className={`ab-status ab-status--${accountState}`} />
         </button>
 
         <button
           type="button"
-          className="ab-btn ab-btn--ghost ab-actions__hide-sm"
+          className="ab-btn ab-btn--big"
           onClick={onToggleDensity}
           title={`Taille : ${DENSITY_LABELS[density]}`}
           aria-label={`BIG — taille d'affichage : ${DENSITY_LABELS[density]}`}
@@ -151,7 +151,7 @@ export function AppHeader({
           }
         >
           {theme === 'jour' ? <IconSun width={14} height={14} /> : <IconMoon width={14} height={14} />}
-          <span>{theme === 'jour' ? 'Jour' : 'Nuit'}</span>
+          <span className="ab-btn__texte-large">{theme === 'jour' ? 'Jour' : 'Nuit'}</span>
           <IconDot width={7} height={7} />
         </button>
       </div>
