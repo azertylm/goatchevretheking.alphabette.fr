@@ -808,3 +808,30 @@ html[data-ab-theme='nuit'] .ab-don-carte > .ab-etiquette {
   .ab-bar__tagline { display: none; }
   .ab-actions__hide-sm { display: none; }
 }
+
+/* Téléphones : la barre application doit tenir sur une seule ligne sans que le
+   nom du site passe sous les boutons. On resserre les espacements et la taille
+   du titre, sans masquer d'action essentielle (dons, compte, thème). */
+@media (max-width: 480px) {
+  .ab-bar {
+    gap: 0.4rem;
+    padding: 0.5rem 0.55rem;
+  }
+  .ab-bar__identity { gap: 0.35rem; }
+  .ab-bar__name {
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ab-bar__actions { gap: 0.25rem; }
+  .ab-bar__actions .ab-btn {
+    gap: 0.25rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+  }
+  .ab-bar__actions .ab-status {
+    width: 0.45rem;
+    height: 0.45rem;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ab-ok) 25%, transparent);
+  }
+}

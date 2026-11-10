@@ -100,7 +100,7 @@ export function AppHeader({
           className="ab-btn ab-btn--ghost ab-actions__hide-sm"
           onClick={onToggleDensity}
           title={`Taille : ${DENSITY_LABELS[density]}`}
-          aria-label={`Taille d'affichage : ${DENSITY_LABELS[density]}`}
+          aria-label={`BIG — taille d'affichage : ${DENSITY_LABELS[density]}`}
         >
           <span>BIG</span>
           <span className="ab-density" aria-hidden="true">
