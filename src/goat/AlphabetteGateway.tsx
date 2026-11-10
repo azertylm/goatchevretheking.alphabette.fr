@@ -59,7 +59,7 @@ export const AlphabetteGateway: React.FC = () => {
         </div>
 
         <p className="mt-6 text-center text-[11px] text-slate-500">
-          © {new Date().getFullYear()} ALPHABETTE SASU — Goat Chèvre The King, un service gratuit propulsé par
+          © {new Date().getFullYear()} ALPHABETTE — Goat Chèvre The King, un service gratuit propulsé par
           alphabette.fr
         </p>
       </div>
