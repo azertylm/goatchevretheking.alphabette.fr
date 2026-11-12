@@ -32,7 +32,7 @@ export const AlphabetteGateway: React.FC = () => {
                 </h2>
                 <p className="mt-2 text-xs sm:text-sm text-slate-300 max-w-2xl">
                   Goat Chèvre The King est un service gratuit parmi d'autres : applications citoyennes, outils B2B
-                  solaires, suite Service France en Zero-Knowledge… Tous conçus à La Grande-Motte et propulsés par une
+                  solaires, suite Service France en Zero-Knowledge… Tous propulsés par une
                   IA souveraine.
                 </p>
               </div>
