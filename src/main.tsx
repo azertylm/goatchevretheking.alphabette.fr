@@ -41,7 +41,7 @@ const isModerationRoute = path === '/moderation' || path.startsWith('/moderation
 // (en développement, il masquerait les rechargements de Vite).
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+    navigator.serviceWorker.register('./sw.js').catch(() => undefined);
   });
 }
 

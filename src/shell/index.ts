@@ -76,3 +76,18 @@ export {
   type Membre,
   type RoleMembre,
 } from './membre';
+
+// Laboratoire alphabette.eu : avis, micro-sondages, confidentialité, dédoublonnage.
+export { useContextualFeedback, MicroSondage, type OptionsSondage } from './labo/useContextualFeedback';
+export { envoyerAvisLabo, soutenirTicket, ticketsOuverts, API_AVIS, type NouvelAvis, type TicketOuvert, type CategorieAvis } from './labo/avis';
+export { nettoyerTexte, clesStockageSures, contexteTechnique, plateformeSimple, cheminCourant, surLeLaboratoire, type ContexteTechnique } from './labo/confidentialite';
+export { similarite, doublonsProbables, normaliser } from './labo/similarite';
+export { ABTestToggle, useABTest, appDepuisAdresse, type ABTestToggleProps, type VarianteAB } from './labo/ABTestToggle';
+export { useVoiceFeedback, BoutonMicro, moteurDisponible, type Voix, type MoteurVocal, type EtatVocal } from './labo/useVoiceFeedback';
+export { structurerAvisVocal, categorieDuType, type AvisVocal, type TypeAvisVocal } from './labo/structurerAvisVocal';
+export { InteractiveSpotlight, MicroTuto, useMicroTuto, type EtapeSpotlight, type InteractiveSpotlightProps, type TutoAgent } from './labo/InteractiveSpotlight';
+export {
+  appelerIA, classerStatut, messagePedagogique, incidentRecent, ecouterIncidents, lireChaineIA, enregistrerChaineIA,
+  IncidentApiTiers, ErreurRequeteIA, MODELES_PAR_DEFAUT, NOMS_FOURNISSEURS, DOMAINES_FOURNISSEURS, MARQUEUR_INCIDENT,
+  type Fournisseur, type MaillonIA, type RequeteIA, type ReponseIA, type Bascule, type TypeIncident, type OptionsRouteur,
+} from './ia/routeurByok';
