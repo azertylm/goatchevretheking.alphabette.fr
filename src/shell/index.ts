@@ -91,3 +91,15 @@ export {
   IncidentApiTiers, ErreurRequeteIA, MODELES_PAR_DEFAUT, NOMS_FOURNISSEURS, DOMAINES_FOURNISSEURS, MARQUEUR_INCIDENT,
   type Fournisseur, type MaillonIA, type RequeteIA, type ReponseIA, type Bascule, type TypeIncident, type OptionsRouteur,
 } from './ia/routeurByok';
+
+// Voix Alphabette unique (Google Gemini TTS « Kore ») : lecteur, bouton Écouter, dictée.
+export { alphabetteAudio, ID_BARRE, type EtatAudio, type InstantaneAudio } from './audio/alphabetteAudio';
+export { BoutonEcouter, IconeAudio, useAlphabetteAudio, texteDeLElement, type BoutonEcouterProps } from './audio/BoutonEcouter';
+export { preparerTexte, decouperTexte, morceauxAPrononcer } from './audio/preparerTexte';
+export { installerAudioAlphabette } from './audio/passerelle';
+export { demarrerDictee, dicteePossible, transcrire, type Dictee, type OptionsDictee } from './audio/dictee';
+export {
+  VOIX_ALPHABETTE, MODELE_TTS, MODELES_TTS_SECOURS, STYLE_VOIX, MODELE_TRANSCRIPTION, MODELES_TRANSCRIPTION_SECOURS,
+  corpsRequeteTts, garantirWav, ttsGeminiDirect,
+} from './audio/voixGemini';
+export { corpsTranscription } from './audio/dictee';
